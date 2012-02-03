@@ -22,7 +22,7 @@ app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x
 
 def takeClass(cl):
     url = 'https://graph.facebook.com/me/mitcourses:take?recipe=%s&access_token=%s'
-    classurl = FB_DOMAIN + 'class/' + cl.name
+    classurl = FB_DOMAIN + 'class/' + cl['name']
     if 'token' not in session:
         return
     accesstoken = session['token']
