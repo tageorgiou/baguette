@@ -72,7 +72,7 @@ def take_class(classname):
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
 def untakeClass(cl, fbid):
-    url = 'https://graph.facebook.com/{%s}?'
+    url = 'https://graph.facebook.com/%s?'
     if 'token' not in session:
         raise Exception
     accesstoken = session['token']
