@@ -22,12 +22,13 @@ app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
 
 def takeClass(cl):
-    url = 'https://graph.facebook.com/me/mitcourses:take?recipe=%s&access_token=%s'
-    classurl = urlencode(FB_DOMAIN + 'class/' + cl['name'])
+    url = 'https://graph.facebook.com/me/mitcourses:take?'
     if 'token' not in session:
         return
     accesstoken = session['token']
-    url = url % (classurl, accesstoken)
+    classurl = urlencode({'class': FB_DOMAIN + 'class/' + cl['name'],
+        'access_token': accesstoken})
+    url = url + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
     return resp
