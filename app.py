@@ -72,12 +72,15 @@ def take_class(classname):
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
 def untakeClass(cl, fbid):
-    url = 'https://graph.facebook.com/%s?'
+    url = 'https://graph.facebook.com/{%s}?'
     if 'token' not in session:
         raise Exception
     accesstoken = session['token']
     classurl = urlencode({'access_token' : accesstoken})
-    url = url + classurl
+    if fbid not in cl['users']:
+        return "Um, you aren't taking this class"
+    actionid = cl['user'][fbid]
+    url = (url % actionid ) + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "DELETE", '')
     return str(resp) + "---" + str(content)
