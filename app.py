@@ -2,7 +2,7 @@ import os
 import json
 import base64
 
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 from database import db, User
 
 OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
@@ -23,7 +23,7 @@ def show_class(classname):
     if cl == None:
         return "404"
     else:
-        return str(cl)
+        return render_template('class.html', cl=cl)
 
 @app.route('/', methods=['POST'])
 def main():
