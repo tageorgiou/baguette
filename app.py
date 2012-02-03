@@ -55,9 +55,11 @@ def main():
         return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
     code = request.args.get('code', None)
     h = httplib2.Http()
-    resp, content = h.request(TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN+"user", FB_APP_SECRET, code))
+    url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN+"user", FB_APP_SECRET, code)
+
+    resp, content = h.request(url)
     if resp['status'] != 200:
-        return content, 500
+        return url + "\n" + content, 500
     return content
 
 #    signed_req_raw = request.form.get('signed_request', '')
