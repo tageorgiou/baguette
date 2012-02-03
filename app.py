@@ -40,7 +40,7 @@ def takeClass(cl, fbid):
 #        cl['users'][fbid] = 
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
-    return str(resp) + '\\' + content
+    return str(resp) + '\\' + content['id']
 
 
 @app.route('/class/<classname>')
