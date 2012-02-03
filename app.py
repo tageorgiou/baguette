@@ -2,6 +2,7 @@ import os
 import json
 from flask import Flask, request, redirect
 from mongokit import Connection, Document
+from database import db
 
 OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
 FB_APP_ID = 196886180398409
@@ -15,6 +16,14 @@ app.debug = True
 @app.route('/start', methods=['GET', 'POST'])
 def start():
     return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
+
+@app.route('/class/<classname>')
+def show_class(classname):
+    cl = db.classes.find_one({'name': classname})
+    if cl == None:
+        return "404"
+    else:
+        return str(cl)
 
 @app.route('/', methods=['POST'])
 def main():
