@@ -1,4 +1,16 @@
 {% extends "layout.html" %}
+{% block head %}
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns# mitcourses:
+    http://ogp.me/ns/apps/mitcourses#">
+    <meta property="fb:app_id" content="196886180398409"196886180398409" />
+    <meta property="og:type" content="mitcourses:class" />
+    <meta propoerty="og:title" content="{{ cl.name }}" />
+    <meta property="og:description" content"{{ cl.label}}" />
+    <eta property="og:url" content="http://baguette.herokuapp.com/class/{{
+    cl.name }}" />
+</head>
+{% endblock %}
+
 {% block body %}
 <h1>{{ cl.name }}</h1>
 <h2>{{ cl.professor }}</h2>
