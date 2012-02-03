@@ -43,7 +43,6 @@ def main():
 
     resp, content = h.request(ME_URL % access_token)
     fb_id = json.loads(content)['id']
-    return "URL: " + (ME_URL % access_token + "<br />ID: " + fb_id)
 
     user = db.users.find_one({'fb_id': fb_id})
     created = 'Updated existing'
@@ -51,6 +50,7 @@ def main():
         created = 'Created new'
         user = db.users.User()
     user['token'] = unicode(access_token)
+    user['fb_id'] = fb_id
     user.save()
     return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
     return content
