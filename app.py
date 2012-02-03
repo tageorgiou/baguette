@@ -42,6 +42,12 @@ def parse_signed_request(signed_request, secret):
     else:
         return data
 
+def user_take_class(user, cl):
+    pass
+
+def user_untake_class(user, cl):
+    pass
+
 @app.route('/class/<classname>')
 def show_class(classname):
     cl = db.classes.find_one({'name': classname})
