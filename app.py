@@ -63,7 +63,7 @@ def take_class(classname):
         return "not logged in"
     fbid = session['fb_id']
     dbg = takeClass(cl)
-    return 'yay. you are now taking %s' % classname
+    return 'yay. you are now taking %s %s' % (classname, db)
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
 
