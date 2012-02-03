@@ -84,7 +84,7 @@ def untakeClass(cl, fbid):
 
 
 @app.route('/class/<classname>/untake')
-def take_class(classname):
+def untake_class(classname):
     cl = db.classes.find_one({'name': classname})
     if cl == None:
         return "404", 404
