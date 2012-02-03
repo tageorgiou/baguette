@@ -96,7 +96,7 @@ def main():
     else:
         user['token'] = unicode(access_token)
         user['fb_id'] = fb_id
-        db.users.save(user)
+        user.save()
     session['fb_id'] = fb_id
     session['token'] = access_token
     return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
