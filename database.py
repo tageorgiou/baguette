@@ -13,6 +13,7 @@ class Class(Document):
         'label' : unicode,
         'description' : unicode,
         'professor' : unicode,
+        'users': [unicode],
     }
     use_dot_notation = True
 
