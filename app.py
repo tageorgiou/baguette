@@ -6,8 +6,8 @@ import json
 import os
 import urlparse
 
-from flask import Flask, request, redirect, render_template
-from database import db, User
+from flask import Flask, request, redirect, render_template, session
+from database import db
 
 FB_APP_ID = 196886180398409
 FB_APP_SECRET = '3c8ac9932be4a87c132751ee8f9ee804'
@@ -18,14 +18,19 @@ ME_URL = "https://graph.facebook.com/me?access_token=%s"
 
 app = Flask(__name__)
 app.debug = True
+app.secretkey = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
+
 
 @app.route('/class/<classname>')
 def show_class(classname):
+    fbid = "nope"
+    if 'fb_id' in session:
+        fbid = session['fb_id']
     cl = db.classes.find_one({'name': classname})
     if cl == None:
         return "404", 404
     else:
-        return render_template('class.html', cl=cl)
+        return render_template('class.html', cl=cl, fbid=fbid)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -56,6 +61,7 @@ def main():
         user['token'] = unicode(access_token)
         user['fb_id'] = fb_id
         db.users.save(user)
+    session['fb_id'] = fb_id
     return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
     return content
 
