@@ -1,7 +1,6 @@
 import os
 import json
 import base64
-import datetime
 
 from flask import Flask, request, redirect
 from database import db, User
