@@ -14,7 +14,7 @@ FB_APP_ID = 196886180398409
 FB_APP_SECRET = '3c8ac9932be4a87c132751ee8f9ee804'
 FB_DOMAIN = 'https://baguette.herokuapp.com/'
 UNSECURE_DOMAIN = 'http://baguette.herokuapp.com/'
-OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=user_actions:publish_actions'
+OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=publish_actions'
 TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 ME_URL = "https://graph.facebook.com/me?access_token=%s"
 
