@@ -5,6 +5,7 @@ import httplib2
 import json
 import os
 import urlparse
+from urllib import urlencode
 
 from flask import Flask, request, redirect, render_template, session
 from database import db
@@ -22,26 +23,28 @@ app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x
 
 def takeClass(cl):
     url = 'https://graph.facebook.com/me/mitcourses:take?recipe=%s&access_token=%s'
-    classurl = FB_DOMAIN + 'class/' + cl['name']
+    classurl = urlencode(FB_DOMAIN + 'class/' + cl['name'])
     if 'token' not in session:
         return
     accesstoken = session['token']
     url = url % (classurl, accesstoken)
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
+    return resp
 
 
 @app.route('/class/<classname>')
 def show_class(classname):
     fbid = "nope"
+    dbg = ''
     cl = db.classes.find_one({'name': classname})
     if 'fb_id' in session:
         fbid = session['fb_id']
-        takeClass(cl)
+        dbg = str(takeClass(cl))
     if cl == None:
         return "404", 404
     else:
-        return render_template('class.html', cl=cl, fbid=fbid)
+        return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
