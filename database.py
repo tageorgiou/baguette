@@ -22,7 +22,7 @@ class User(Document):
         'oauth_token': unicode,
         'date_creation': datetime.datetime,
     }
-    required_fields = ['name', 'fb_id', 'oauth_token', 'date_creation']
+    required_fields = ['fb_id', 'oauth_token', 'date_creation']
     default_valeus = {'date_creation': datetime.datetime.utcnow}
 
 connection.register([Class, User])
