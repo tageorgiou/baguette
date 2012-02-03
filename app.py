@@ -1,6 +1,11 @@
 import os
-from flask import Flask, request
+import json
+from flask import Flask, request, redirect
 from mongokit import Connection, Document
+
+OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
+FB_APP_ID = 196886180398409
+FB_DOMAIN = 'https://baguette.herokuapp.com/'
 
 app = Flask(__name__)
 app.debug = True
@@ -9,10 +14,16 @@ MLU = 'mongodb://heroku_app2744761:7j7n2hpdftkrumvl1uhf7k41k8@ds029847.mongolab.
 connection = Connection(MLU)
 db = connection.heroku_app2744761
 
-@app.route('/', methods=['GET','POST'])
-def hello():
+
+# Page unauthenticated users land at.
+@app.route('/start', methods=['GET', 'POST'])
+def start():
+    return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
+
+@app.route('/', methods=['POST'])
+def main():
     raise
-    return 'Hello world!!'
+    return 'welcome'
 
 class TUser(Document):
     structure = {
