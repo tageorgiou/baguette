@@ -39,11 +39,6 @@ def parse_signed_request(signed_request, secret):
     else:
         return data
 
-# Page unauthenticated users land at.
-@app.route('/start', methods=['GET', 'POST'])
-def start():
-    return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
-
 @app.route('/class/<classname>')
 def show_class(classname):
     cl = db.classes.find_one({'name': classname})
@@ -52,17 +47,20 @@ def show_class(classname):
     else:
         return render_template('class.html', cl=cl)
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def main():
     signed_req_raw = request.form.get('signed_request', '')
     if not signed_req_raw:
         return '', 400
     signed_req = parse_signed_request(signed_req_raw, FB_APP_SECRET)
-    user = db.users.User()
-    user['fb_id'] = signed_req['user_id']
-    user['oauth_token'] = signed_req['oauth_token']
-    user.save()
-    return 'welcome'
+    if 'fb_id' not in signed_req:
+        return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
+    else:
+        user = db.users.User()
+        user['fb_id'] = signed_req['user_id']
+        user['oauth_token'] = signed_req['oauth_token']
+        user.save()
+        return 'welcome'
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
