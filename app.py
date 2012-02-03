@@ -59,11 +59,11 @@ def main():
     url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN, FB_APP_SECRET, code)
 
     resp, content = h.request(url)
-    if resp['status'] != 200:
-        return "Error requesting token!", 500
+    if resp['status'] != '200':
+        return "Error requesting token.", 500
     access_token, expires = urlparse.parse_qs(content)
     user = db.users.User()
-    user['token'] = access_token
+    user['token'] = unicode(access_token)
     user.save()
     return content
 
