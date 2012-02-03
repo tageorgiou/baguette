@@ -57,7 +57,7 @@ def main():
     h = httplib2.Http()
     resp, content = h.request(TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN+"user", FB_APP_SECRET, code))
     if resp['status'] != 200:
-        return 'Error getting oauth token', 500
+        return content, 500
     return content
 
 #    signed_req_raw = request.form.get('signed_request', '')
