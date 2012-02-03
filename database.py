@@ -13,7 +13,7 @@ class Class(Document):
         'label' : unicode,
         'description' : unicode,
         'professor' : unicode,
-        'users': [unicode],
+        'users': dict, #fbid : action fbid
     }
     use_dot_notation = True
 

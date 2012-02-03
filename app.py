@@ -37,10 +37,10 @@ def takeClass(cl, fbid):
     resp, content = h.request(url, "POST", '')
     was_successful = (resp['status'] == '200')
     if was_successful:
-        cl['users'].append(fbid)
+#        cl['users'][fbid] = 
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
-    return str(resp) + content
+    return str(resp) + '\\' + content
 
 
 @app.route('/class/<classname>')
