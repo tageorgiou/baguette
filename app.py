@@ -39,7 +39,7 @@ def main():
     if resp['status'] != '200':
         return "Error requesting token.", 500
     param = urlparse.parse_qs(content)
-    access_token, expires = [x[0] for x in param.values]
+    access_token, expires = [x[0] for x in param.values()]
 
     resp, content = h.request(OBJ_URL % access_token)
     fb_id = json.loads(content)['id']
