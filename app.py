@@ -36,13 +36,12 @@ def takeClass(cl, fbid):
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
     content = json.loads(content)
-    was_successful = (resp['status'] == '200' or resp['status'] == '400')
+    was_successful = (resp['status'] == '200')
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + '\\' + content['id']
-
 
 @app.route('/class/<classname>')
 def show_class(classname):
@@ -72,6 +71,31 @@ def take_class(classname):
     return 'yay. you are now taking %s %s' % (classname, dbg)
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
+def untakeClass(cl, fbid):
+    url = 'https://graph.facebook.com/%s?'
+    if 'token' not in session:
+        raise Exception
+    accesstoken = session['token']
+    classurl = urlencode({'access_token' : accesstoken})
+    url = url + classurl
+    h = httplib2.Http()
+    resp, content = h.request(url, "DELETE", '')
+    return str(resp) + "---" + str(content)
+
+
+@app.route('/class/<classname>/untake')
+def take_class(classname):
+    cl = db.classes.find_one({'name': classname})
+    if cl == None:
+        return "404", 404
+    if 'fb_id' not in session:
+        return "not authorized"
+    if 'token' not in session:
+        return "not logged in"
+    fbid = session['fb_id']
+    dbg = untakeClass(cl, fbid)
+    return 'yay. you are now not taking %s %s' % (classname, dbg)
+#    redirect('FB_DOMAIN/class/%s' % classname)
 
 
 @app.route('/', methods=['GET', 'POST'])
