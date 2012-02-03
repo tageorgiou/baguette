@@ -58,7 +58,7 @@ def main():
     if not signed_req_raw:
         return '', 400
     signed_req = parse_signed_request(signed_req_raw, FB_APP_SECRET)
-    user = User()
+    user = db.users.User()
     user['fb_id'] = signed_req['user_id']
     user['oauth_token'] = signed_req['oauth_token']
     user.save()
