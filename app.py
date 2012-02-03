@@ -60,7 +60,7 @@ def main():
 
     resp, content = h.request(url)
     if resp['status'] != 200:
-        return "Error requesting token: " + url, 500
+        return "Error requesting token:<br />" + url + "<br />" + content, 500
     access_token, expires = urlparse.parse_qs(content)
     user = db.users.User()
     user['token'] = access_token
