@@ -10,8 +10,9 @@ MLU = 'mongodb://heroku_app2744761:7j7n2hpdftkrumvl1uhf7k41k8@ds029847.mongolab.
 connection = Connection(MLU)
 db = connection.heroku_app2744761
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def hello():
+    print request.form
     return 'Hello world!!'
 
 class TUser(Document):
