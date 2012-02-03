@@ -4,8 +4,7 @@ import base64
 import datetime
 
 from flask import Flask, request, redirect
-from mongokit import Connection, Document
-from database import db
+from database import db, User
 
 OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
 FB_APP_ID = 196886180398409
@@ -13,8 +12,6 @@ FB_DOMAIN = 'https://baguette.herokuapp.com/'
 
 app = Flask(__name__)
 app.debug = True
-
-con = Connection()
 
 # Page unauthenticated users land at.
 @app.route('/start', methods=['GET', 'POST'])
@@ -43,16 +40,6 @@ def main():
     user.save()
     raise
     return 'welcome'
-
-@con.register
-class User(Document):
-    structure = {
-        'fb_id': unicode,
-        'oauth_token': unicode,
-        'date_creation': datetime.datetime,
-    }
-    required_fields = ['name', 'fb_id', 'oauth_token', 'date_creation']
-    default_valeus = {'date_creation': datetime.datetime.utcnow}
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
