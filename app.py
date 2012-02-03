@@ -27,8 +27,7 @@ def show_class(classname):
 
 @app.route('/', methods=['POST'])
 def main():
-    raise
-    signed_req_raw = base64.b64decode(request.form.get('signed_request', ''))
+    signed_req_raw = base64.b64decode(unicode(request.form.get('signed_request', '')))
     if not signed_req_raw:
         return '', 400
     signed_req = json.parse(signed_req_raw)
