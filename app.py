@@ -79,7 +79,7 @@ def untakeClass(cl, fbid):
     classurl = urlencode({'access_token' : accesstoken})
     if fbid not in cl['users']:
         return "Um, you aren't taking this class"
-    actionid = cl['user'][fbid]
+    actionid = cl['users'][fbid]
     url = (url % actionid ) + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "DELETE", '')
