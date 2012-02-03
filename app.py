@@ -1,5 +1,7 @@
 import os
 import json
+import base64
+
 from flask import Flask, request, redirect
 from mongokit import Connection, Document
 
@@ -22,7 +24,7 @@ def start():
 
 @app.route('/', methods=['POST'])
 def main():
-    signed_req_raw = request.form.get('signed_request', None)
+    signed_req_raw = base64.b64decode(request.form.get('signed_request', ''))
     if not signed_req_raw:
         return '', 400
     signed_req = json.parse(signed_req_raw)
