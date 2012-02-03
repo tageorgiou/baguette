@@ -27,6 +27,7 @@ def show_class(classname):
 
 @app.route('/', methods=['POST'])
 def main():
+    raise
     signed_req_raw = base64.b64decode(request.form.get('signed_request', ''))
     if not signed_req_raw:
         return '', 400
@@ -37,7 +38,6 @@ def main():
     user['fb_id'] = fb_id
     user['oauth_token'] = oauth_token
     user.save()
-    raise
     return 'welcome'
 
 if __name__ == '__main__':
