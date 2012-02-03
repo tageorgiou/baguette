@@ -20,13 +20,24 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
 
+def takeClass(cl):
+    url = 'https://graph.facebook.com/me/mitcourses:take?recipe=%s&access_token=%s'
+    classurl = FB_DOMAIN + 'class/' + cl.name
+    if 'token' not in session:
+        return
+    accesstoken = session['token']
+    url = url % (classurl, accesstoken)
+    h = httplib2.Http()
+    resp, content = h.request(url, "POST", '')
+
 
 @app.route('/class/<classname>')
 def show_class(classname):
     fbid = "nope"
+    cl = db.classes.find_one({'name': classname})
     if 'fb_id' in session:
         fbid = session['fb_id']
-    cl = db.classes.find_one({'name': classname})
+        takeClass(cl)
     if cl == None:
         return "404", 404
     else:
@@ -62,6 +73,7 @@ def main():
         user['fb_id'] = fb_id
         db.users.save(user)
     session['fb_id'] = fb_id
+    session['token'] = access_token
     return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
     return content
 
