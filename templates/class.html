@@ -16,7 +16,7 @@
 <h3>{{ cl.professor }}</h2>
 {{ cl.description }}
 <br />
-{% if cl.is_taking %}
+{% if cl_is_taking %}
 <a href="/class/{{ cl.name }}/untake">Untake this class/a>
 {% else %}
 <a href="/class/{{ cl.name }}/take">Take this class</a>

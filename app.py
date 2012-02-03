@@ -53,8 +53,8 @@ def show_class(classname):
         #dbg = str(takeClass(cl))
     if cl == None:
         return "404", 404
-    cl.is_taking = fbid in cl['users']
-    return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg)
+    cl_is_taking = fbid in cl['users']
+    return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg, cl_is_taking)
 
 @app.route('/class/<classname>/take')
 def take_class(classname):
