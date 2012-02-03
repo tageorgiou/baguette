@@ -42,8 +42,8 @@ def main():
     access_token, expires = [x[0] for x in param.values()]
 
     resp, content = h.request(ME_URL % access_token)
-    return "URL: " + (ME_URL % access_token)
     fb_id = json.loads(content)['id']
+    return "URL: " + (ME_URL % access_token + "<br />ID: " + fb_id)
 
     user = db.users.find_one({'fb_id': fb_id})
     created = 'Updated existing'
