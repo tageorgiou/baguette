@@ -63,7 +63,7 @@ def main():
         return "Error requesting token.", 500
     access_token, expires = urlparse.parse_qs(content)
     user = db.users.User()
-    user['token'] = access_token
+    user['token'] = unicode(access_token)
     user.save()
     return content
 
