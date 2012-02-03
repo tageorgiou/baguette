@@ -4,7 +4,7 @@
     http://ogp.me/ns/apps/mitcourses#">
     <meta property="og:type" content="mitcourses:class" />
     <meta property="og:title" content="{{ cl.name }}" />
-    <meta property="og:description" content"{{ cl.label}}" />
+    <meta property="og:description" content="{{ cl.label }}" />
     <eta property="og:url" content="http://baguette.herokuapp.com/class/{{ cl.name }}" />
 </head>
 {% endblock %}
@@ -12,7 +12,8 @@
 {% block body %}
 <h1>Hi {{ fbid }}</h1>
 <h1>{{ cl.name }}</h1>
-<h2>{{ cl.professor }}</h2>
+<h2>{{ cl.label }}</h2>
+<h3>{{ cl.professor }}</h2>
 {{ cl.description }}
 
 <a href="/class/{{ cl.name }}/take">Take this class</a>

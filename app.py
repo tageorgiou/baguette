@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
 
-def takeClass(cl):
+def takeClass(cl, fbid):
     url = 'https://graph.facebook.com/me/mitcourses:take?'
     #session['token'] = \
     #'AAACzESLYBUkBAEknGENPIb36viFtt0Fnpn9o8PZBII8dSoxhQnuFBSy3BJFhdAuRYZBZCxTdqbJ6rPPEF3zAcWyXryBz3JkANJSZCM9mZAQZDZD'
@@ -35,7 +35,11 @@ def takeClass(cl):
     url = url + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
-    print url
+    was_successful = (resp['status'] == '200')
+    if was_successful:
+        cl.users.append(fbid)
+        cl.save()
+        redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + content
 
 
@@ -62,7 +66,7 @@ def take_class(classname):
     if 'token' not in session:
         return "not logged in"
     fbid = session['fb_id']
-    dbg = takeClass(cl)
+    dbg = takeClass(cl, fbid)
     return 'yay. you are now taking %s %s' % (classname, dbg)
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
