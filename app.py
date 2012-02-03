@@ -12,6 +12,12 @@ FB_DOMAIN = 'https://baguette.herokuapp.com/'
 app = Flask(__name__)
 app.debug = True
 
+def base64_url_decode(inp):
+    padding_factor = (4 - len(inp) % 4) % 4
+    inp += "="*padding_factor 
+    return base64.b64decode(unicode(inp).translate(dict(zip(map(ord, u'-_'), u'+/'))))
+
+
 # Page unauthenticated users land at.
 @app.route('/start', methods=['GET', 'POST'])
 def start():
@@ -27,7 +33,7 @@ def show_class(classname):
 
 @app.route('/', methods=['POST'])
 def main():
-    signed_req_raw = base64.b64decode(unicode(request.form.get('signed_request', '')))
+    signed_req_raw = base64_url_decode(unicode(request.form.get('signed_request', '')))
     if not signed_req_raw:
         return '', 400
     signed_req = json.parse(signed_req_raw)
