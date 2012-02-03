@@ -46,7 +46,7 @@ def show_class(classname):
     cl = db.classes.find_one({'name': classname})
     if 'fb_id' in session:
         fbid = session['fb_id']
-        dbg = str(takeClass(cl))
+        #dbg = str(takeClass(cl))
     if cl == None:
         return "404", 404
     else:
