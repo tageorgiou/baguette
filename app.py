@@ -39,7 +39,7 @@ def takeClass(cl, fbid):
     if was_successful:
         cl['users'].append(fbid)
         db.classes.save(cl)
-        redirect(FB_DOMAIN + '/class/%s' % cl.name)
+#        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + content
 
 
