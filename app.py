@@ -52,7 +52,7 @@ def show_class(classname):
 
 @app.route('/', methods=['POST'])
 def main():
-    signed_req_raw = base64_url_decode(unicode(request.form.get('signed_request', '')))
+    signed_req_raw = request.form.get('signed_request', '')
     if not signed_req_raw:
         return '', 400
     signed_req = parse_signed_request(signed_req_raw, FB_APP_SECRET)
