@@ -7,11 +7,21 @@ db = connection.heroku_app2744761
 
 class Class(Document):
     structure = {
-            'name' : unicode,
-            'label' : unicode,
-            'description' : unicode,
-            'professor' : unicode,
+        'name' : unicode,
+        'label' : unicode,
+        'description' : unicode,
+        'professor' : unicode,
     }
     use_dot_notation = True
 
-connection.register([Class])
+class User(Document):
+    structure = {
+        'fb_id': unicode,
+        'oauth_token': unicode,
+        'date_creation': datetime.datetime,
+    }
+    required_fields = ['name', 'fb_id', 'oauth_token', 'date_creation']
+    default_valeus = {'date_creation': datetime.datetime.utcnow}
+
+connection.register([Class, User])
+
