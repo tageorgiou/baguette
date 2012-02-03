@@ -13,6 +13,7 @@ from database import db
 FB_APP_ID = 196886180398409
 FB_APP_SECRET = '3c8ac9932be4a87c132751ee8f9ee804'
 FB_DOMAIN = 'https://baguette.herokuapp.com/'
+UNSECURE_DOMAIN = 'http://baguette.herokuapp.com/'
 OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
 TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 ME_URL = "https://graph.facebook.com/me?access_token=%s"
@@ -23,22 +24,25 @@ app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x
 
 def takeClass(cl):
     url = 'https://graph.facebook.com/me/mitcourses:take?'
+    session['token'] = \
+    'AAACzESLYBUkBAEknGENPIb36viFtt0Fnpn9o8PZBII8dSoxhQnuFBSy3BJFhdAuRYZBZCxTdqbJ6rPPEF3zAcWyXryBz3JkANJSZCM9mZAQZDZD'
     if 'token' not in session:
         return
     accesstoken = session['token']
-    classurl = urlencode({'class': FB_DOMAIN + 'class/' + cl['name'],
+    classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
-        'professor' : 'winston'})
+        'professor' : cl['professor']})
     url = url + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
-    return resp
+    print url
+    return str(resp) + content
 
 
 @app.route('/class/<classname>')
 def show_class(classname):
     fbid = "nope"
-    dbg = ''
+    dbg = 'eee'
     cl = db.classes.find_one({'name': classname})
     if 'fb_id' in session:
         fbid = session['fb_id']
