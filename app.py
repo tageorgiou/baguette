@@ -27,7 +27,8 @@ def takeClass(cl):
         return
     accesstoken = session['token']
     classurl = urlencode({'class': FB_DOMAIN + 'class/' + cl['name'],
-        'access_token': accesstoken})
+        'access_token': accesstoken,
+        'professor' : 'winston'})
     url = url + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
