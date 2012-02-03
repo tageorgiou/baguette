@@ -49,9 +49,13 @@ def main():
     if user is None:
         created = 'Created new'
         user = db.users.User()
-    user['token'] = unicode(access_token)
-    user['fb_id'] = fb_id
-    user.save()
+        user['token'] = unicode(access_token)
+        user['fb_id'] = fb_id
+        user.save()
+    else:
+        user['token'] = unicode(access_token)
+        user['fb_id'] = fb_id
+        db.users.save(user)
     return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
     return content
 
