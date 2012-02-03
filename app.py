@@ -47,7 +47,7 @@ def show_class(classname):
     else:
         return str(cl)
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def main():
     signed_req_raw = request.form.get('signed_request', '')
     if not signed_req_raw:
