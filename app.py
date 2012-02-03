@@ -1,11 +1,12 @@
 import os
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
+app.debug = True
 
 @app.route('/', methods=['GET','POST'])
 def hello():
-    print request.form
+    raise
     return 'Hello world!!'
 
 if __name__ == '__main__':
