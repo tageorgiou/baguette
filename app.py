@@ -35,9 +35,10 @@ def takeClass(cl, fbid):
     url = url + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "POST", '')
-    was_successful = (resp['status'] == '200')
+    content = json.loads(content)
+    was_successful = (resp['status'] == '200' or resp['status'] == '400')
     if was_successful:
-#        cl['users'][fbid] = 
+        cl['users'][fbid] = unicode(content['id'])
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + '\\' + content['id']
