@@ -18,11 +18,10 @@ class Class(Document):
 
 class User(Document):
     structure = {
-        'fb_id': unicode,
         'oauth_token': unicode,
         'date_creation': datetime.datetime,
     }
-    required_fields = ['fb_id', 'oauth_token', 'date_creation']
+    required_fields = ['oauth_token', 'date_creation']
     default_values = {'date_creation': datetime.datetime.utcnow}
 
 connection.register([Class, User])

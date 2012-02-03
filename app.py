@@ -4,6 +4,7 @@ import hmac
 import httplib2
 import json
 import os
+import urlparse
 
 from flask import Flask, request, redirect, render_template
 from database import db, User
@@ -55,24 +56,16 @@ def main():
         return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
     code = request.args.get('code', None)
     h = httplib2.Http()
-    url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN+"user/", FB_APP_SECRET, code)
+    url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN, FB_APP_SECRET, code)
 
     resp, content = h.request(url)
     if resp['status'] != 200:
-        return url + "\n" + content, 500
+        return "Error requesting token!", 500
+    access_token, expires = urlparse.parse_qs(content)
+    user = db.users.User()
+    user['token'] = access_token
+    user.save()
     return content
-
-#    signed_req_raw = request.form.get('signed_request', '')
-#    if not signed_req_raw:
-#        return '', 400
-#    signed_req = parse_signed_request(signed_req_raw, FB_APP_SECRET)
-#    if 'fb_id' not in signed_req:
-#    else:
-#        user = db.users.User()
-#        user['fb_id'] = signed_req['user_id']
-#        user['oauth_token'] = signed_req['oauth_token']
-#        user.save()
-#        return 'welcome'
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
