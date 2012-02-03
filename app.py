@@ -24,10 +24,10 @@ app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x
 
 def takeClass(cl):
     url = 'https://graph.facebook.com/me/mitcourses:take?'
-    session['token'] = \
-    'AAACzESLYBUkBAEknGENPIb36viFtt0Fnpn9o8PZBII8dSoxhQnuFBSy3BJFhdAuRYZBZCxTdqbJ6rPPEF3zAcWyXryBz3JkANJSZCM9mZAQZDZD'
+    #session['token'] = \
+    #'AAACzESLYBUkBAEknGENPIb36viFtt0Fnpn9o8PZBII8dSoxhQnuFBSy3BJFhdAuRYZBZCxTdqbJ6rPPEF3zAcWyXryBz3JkANJSZCM9mZAQZDZD'
     if 'token' not in session:
-        return
+        raise Exception
     accesstoken = session['token']
     classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
@@ -51,6 +51,22 @@ def show_class(classname):
         return "404", 404
     else:
         return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg)
+
+@app.route('/class/<classname>/take')
+def take_class(classname):
+    cl = db.classes.find_one({'name': classname})
+    if cl == None:
+        return "404", 404
+    if 'fb_id' not in session:
+        return "not authorized"
+    if 'token' not in session:
+        return "not logged in"
+    fbid = session['fb_id']
+    dbg = takeClass(cl)
+    return 'yay. you are now taking %s' % classname
+#    redirect('FB_DOMAIN/class/%s' % classname)
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
