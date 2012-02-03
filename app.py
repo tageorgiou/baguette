@@ -37,8 +37,8 @@ def takeClass(cl, fbid):
     resp, content = h.request(url, "POST", '')
     was_successful = (resp['status'] == '200')
     if was_successful:
-        cl.users.append(fbid)
-        cl.save()
+        cl['users'].append(fbid)
+        db.classes.save(cl)
         redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + content
 
@@ -53,8 +53,8 @@ def show_class(classname):
         #dbg = str(takeClass(cl))
     if cl == None:
         return "404", 404
-    else:
-        return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg)
+    cl.is_taking = fbid in cl['users']
+    return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg)
 
 @app.route('/class/<classname>/take')
 def take_class(classname):
