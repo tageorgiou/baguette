@@ -4,13 +4,12 @@ import hmac
 import httplib2
 import json
 import os
-import urllib
 
 from flask import Flask, request, redirect, render_template
 from database import db, User
 
-OAUTH_URL = 'https://www.facebook.com/dialog/oauth?'
-TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?'
+OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
+TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 FB_APP_ID = 196886180398409
 FB_APP_SECRET = '3c8ac9932be4a87c132751ee8f9ee804'
 FB_DOMAIN = 'https://baguette.herokuapp.com/'
@@ -53,15 +52,11 @@ def show_class(classname):
 @app.route('/', methods=['GET', 'POST'])
 def main():
     if 'code' not in request.args:
-        url_params = dict(client_id=FB_APP_ID, redirect_uri=FB_DOMAIN)
-        return redirect(OAUTH_URL + urllib.urlencode(url_params))
+        return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
     code = request.args.get('code', None)
     h = httplib2.Http()
-    url_params = dict(client_id=FB_APP_ID,
-        redirect_uri=FB_DOMAIN+'user',
-        client_secret=FB_APP_SECRET,
-        code=code)
-    url = TOKEN_ENDPOINT + urllib.urlencode(url_params)
+    url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN+"user/", FB_APP_SECRET, code)
+
     resp, content = h.request(url)
     if resp['status'] != 200:
         return url + "\n" + content, 500
