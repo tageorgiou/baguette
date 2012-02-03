@@ -9,38 +9,15 @@ import urlparse
 from flask import Flask, request, redirect, render_template
 from database import db, User
 
-OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
-TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 FB_APP_ID = 196886180398409
 FB_APP_SECRET = '3c8ac9932be4a87c132751ee8f9ee804'
 FB_DOMAIN = 'https://baguette.herokuapp.com/'
+OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s'
+TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
+ME_URL = "https://graph.facebook.com/me?access_token=%s"
 
 app = Flask(__name__)
 app.debug = True
-
-def base64_url_decode(inp):
-    padding_factor = (4 - len(inp) % 4) % 4
-    inp += "="*padding_factor 
-    return base64.b64decode(unicode(inp).translate(dict(zip(map(ord, u'-_'), u'+/'))))
-
-def parse_signed_request(signed_request, secret):
-
-    l = signed_request.split('.', 2)
-    encoded_sig = l[0]
-    payload = l[1]
-
-    sig = base64_url_decode(encoded_sig)
-    data = json.loads(base64_url_decode(payload))
-
-    if data.get('algorithm').upper() != 'HMAC-SHA256':
-        return None
-    else:
-        expected_sig = hmac.new(secret, msg=payload, digestmod=hashlib.sha256).digest()
-
-    if sig != expected_sig:
-        return None
-    else:
-        return data
 
 @app.route('/class/<classname>')
 def show_class(classname):
@@ -61,10 +38,20 @@ def main():
     resp, content = h.request(url)
     if resp['status'] != '200':
         return "Error requesting token.", 500
-    access_token, expires = urlparse.parse_qs(content)
-    user = db.users.User()
+    param = urlparse.parse_qs(content)
+    access_token, expires = [x[0] for x in param.values]
+
+    resp, content = h.request(OBJ_URL % access_token)
+    fb_id = json.loads(content)['id']
+
+    user = db.users.find_one({'fb_id': fb_id})
+    created = 'Updated existing'
+    if user is None:
+        created = 'Created new'
+        user = db.users.User()
     user['token'] = unicode(access_token)
     user.save()
+    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
     return content
 
 if __name__ == '__main__':

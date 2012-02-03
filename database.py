@@ -18,6 +18,7 @@ class Class(Document):
 
 class User(Document):
     structure = {
+        'fb_id': unicode,
         'token': unicode,
         'date_creation': datetime.datetime,
     }
