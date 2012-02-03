@@ -1,6 +1,8 @@
 import json
 from database import db
 
+db.drop_collection('classes')
+
 classes = json.load(open('res/courses.json'))["items"]
 
 for cl in classes:
