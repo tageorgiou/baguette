@@ -24,8 +24,6 @@ app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x
 
 def takeClass(cl, fbid):
     url = 'https://graph.facebook.com/me/mitcourses:take?'
-    #session['token'] = \
-    #'AAACzESLYBUkBAEknGENPIb36viFtt0Fnpn9o8PZBII8dSoxhQnuFBSy3BJFhdAuRYZBZCxTdqbJ6rPPEF3zAcWyXryBz3JkANJSZCM9mZAQZDZD'
     if 'token' not in session:
         raise Exception
     accesstoken = session['token']
@@ -83,6 +81,10 @@ def untakeClass(cl, fbid):
     url = (url % actionid ) + classurl
     h = httplib2.Http()
     resp, content = h.request(url, "DELETE", '')
+    was_successful = (resp['status'] == '200')
+    if was_successful:
+        if fbid in cl['users']:
+            del cl['users'][fbid]
     return str(resp) + "---" + str(content)
 
 
