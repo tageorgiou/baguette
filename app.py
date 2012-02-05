@@ -62,7 +62,7 @@ def show_class(classname):
     classTakers = cl['userlist']
     friendClassTakers = []
     for f in friendList:
-        if f.uid2 in classTakers:
+        if f.uid in classTakers:
             friendClassTakers.append(f)
     return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg,
             cl_is_taking=cl_is_taking, friends=friendClassTakers)
