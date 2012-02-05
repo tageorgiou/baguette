@@ -17,6 +17,7 @@ UNSECURE_DOMAIN = 'http://baguette.herokuapp.com/'
 OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=publish_actions'
 TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 ME_URL = "https://graph.facebook.com/me?access_token=%s"
+NOACTION_CLASS_TAKE = '-1'
 
 app = Flask(__name__)
 app.debug = True
@@ -37,6 +38,9 @@ def takeClass(cl, fbid):
     was_successful = (resp['status'] == '200')
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
+        db.classes.save(cl)
+    else: 
+        cl['users'][fbid] = NOACTION_CLASS_TAKE
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + '\\' + content['id']
@@ -78,13 +82,18 @@ def untakeClass(cl, fbid):
     if fbid not in cl['users']:
         return "Um, you aren't taking this class"
     actionid = cl['users'][fbid]
-    url = (url % actionid ) + classurl
-    h = httplib2.Http()
-    resp, content = h.request(url, "DELETE", '')
-    was_successful = (resp['status'] == '200')
-    if was_successful:
+    if actionid == NOACTION_CLASS_TAKE:
         if fbid in cl['users']:
             del cl['users'][fbid]
+        return "Not taking"
+    else:
+        url = (url % actionid ) + classurl
+        h = httplib2.Http()
+        resp, content = h.request(url, "DELETE", '')
+        was_successful = (resp['status'] == '200')
+        if was_successful:
+            if fbid in cl['users']:
+                del cl['users'][fbid]
     return str(resp) + "---" + str(content)
 
 
