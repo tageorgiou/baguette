@@ -10,22 +10,23 @@
 {% endblock %}
 
 {% block body %}
-<h1>Hi {{ fbid }}</h1>
+<!--<h1>Hi {{ fbid }}</h1>-->
 <h1>{{ cl.name }}</h1>
 <h2>{{ cl.label }}</h2>
 <h3>{{ cl.professor }}</h2>
 {{ cl.description }}
 <br />
 {% if cl_is_taking %}
-<a href="/class/{{ cl.name }}/untake">Untake this class</a>
+<a href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
 {% else %}
 <a href="/class/{{ cl.name }}/take">Take this class</a>
 {% endif %}
 
 {% for f in friends %}
-{{ f.name }}
+<div>
+    <h4>{{ f.name }}</h4>
 <img src="{{ f.pic_square}}">
+</div>
 {% endfor %}
 
-{{ dbg }}
 {% endblock %}

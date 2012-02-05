@@ -45,7 +45,8 @@ def takeClass(cl, fbid):
         cl['userlist'].append(fbid)
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
-    return str(resp) + '\\' + content['id']
+#    return str(resp) + '\\' + content['id']
+    return ""
 
 @app.route('/class/<classname>')
 def show_class(classname):
@@ -60,9 +61,12 @@ def show_class(classname):
     cl_is_taking = fbid in cl['users']
     friendList = get_friends()
     classTakers = cl['userlist']
+    print classTakers
     friendClassTakers = []
+    print friendList[0]['uid']
     for f in friendList:
-        if f['uid'] in classTakers:
+        if unicode(f['uid']) in classTakers:
+            print "HER"
             friendClassTakers.append(f)
     return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg,
             cl_is_taking=cl_is_taking, friends=friendClassTakers)
@@ -106,7 +110,8 @@ def untakeClass(cl, fbid):
                 del cl['users'][fbid]
                 cl['userlist'].remove(fbid)
                 db.classes.save(cl)
-    return str(resp) + "---" + str(content)
+    #return str(resp) + "---" + str(content)
+    return ""
 
 
 @app.route('/class/<classname>/untake')
@@ -124,7 +129,11 @@ def untake_class(classname):
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
 def find_registered_classes(fbid):
-    return db.classes.find({ 'users': fbid })
+    classes = []
+    clcc = db.classes.find({ 'userlist': unicode(fbid) })
+    for i in range(0,clcc.count()):
+        classes.append(clcc.next())
+    return classes
 
 def get_friends():
     if 'fb_id' not in session:
@@ -179,9 +188,6 @@ def main():
         db.users.save(user)
     session['fb_id'] = fb_id
     session['token'] = access_token
-
-    for c in find_registered_classes(fb_id):
-        print c
 
     return render_template('home.html', fbid=fb_id,
             classes=find_registered_classes(fb_id), friends=get_friends())
