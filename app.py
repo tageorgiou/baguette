@@ -83,7 +83,7 @@ def take_class(classname):
     fbid = session['fb_id']
     dbg = takeClass(cl, fbid)
     return 'yay. you are now taking %s %s' % (classname, dbg)
-#    redirect('FB_DOMAIN/class/%s' % classname)
+    redirect('/class/%s' % classname)
 
 def untakeClass(cl, fbid):
     url = 'https://graph.facebook.com/%s?'
@@ -126,7 +126,7 @@ def untake_class(classname):
     fbid = session['fb_id']
     dbg = untakeClass(cl, fbid)
     return 'yay. you are now not taking %s %s' % (classname, dbg)
-#    redirect('FB_DOMAIN/class/%s' % classname)
+    redirect('/class/%s' % classname)
 
 def find_registered_classes(fbid):
     classes = []
