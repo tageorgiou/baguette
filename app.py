@@ -143,8 +143,10 @@ def main():
         db.users.save(user)
     session['fb_id'] = fb_id
     session['token'] = access_token
-    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
-    return content
+
+    return render_template('home.html', fbid=fb_id)
+#    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
+#    return content
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

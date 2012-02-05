@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block head %}
+<head>
+    <title>MIT Courses</title>
+</head>
+{% endblock %}
+
+{% block body %}
+You are currently registered for:
+<ul>
+    <li>6.046</li>
+</ul>
+
+<form action="" method=get class=search-box>
+    <p>Search this website for:
+    <input type=text name=q size=30 value="">
+    <input type=submit value="Search">
+</form>
+{% endif %}
+
+<iframe src="//www.facebook.com/plugins/facepile.php?href=http%3A%2F%2Fbaguette.herokuapp.com%2Fclass%2F6.046&amp;action=mitcourses%3Ais+taking&amp;size=large&amp;max_rows=1&amp;width=300&amp;colorscheme=light&amp;appId=196886180398409" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
+
+{% endblock %}
