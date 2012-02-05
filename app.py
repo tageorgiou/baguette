@@ -111,6 +111,30 @@ def untake_class(classname):
     return 'yay. you are now not taking %s %s' % (classname, dbg)
 #    redirect('FB_DOMAIN/class/%s' % classname)
 
+def find_registered_classes(fbid):
+    return db.classes.find({ 'users': fbid })
+
+def get_friends():
+    if 'fb_id' not in session:
+        raise Exception()
+    if 'token' not in session:
+        raise Exception()
+    authtoken = session['token']
+    fbid = session['fb_id']
+    url = 'https://graph.facebook.com/fql?'
+    endurl = urlencode({'access_token' : authtoken,
+        'q': 'SELECT uid, name, pic_square FROM user WHERE uid = me() OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())'})
+    url = url + endurl
+    h = httplib2.Http()
+    resp, content = h.request(url, "GET", '')
+    was_successful = (resp['status'] == '200')
+    if was_successful:
+        friendsList = json.loads(content)['data']
+        return friendsList
+    else:
+        raise Exception()
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -144,7 +168,11 @@ def main():
     session['fb_id'] = fb_id
     session['token'] = access_token
 
-    return render_template('home.html', fbid=fb_id)
+    for c in find_registered_classes(fb_id):
+        print c
+
+    return render_template('home.html', fbid=fb_id,
+            classes=find_registered_classes(fb_id), friends=get_friends())
 #    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
 #    return content
 
