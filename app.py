@@ -61,6 +61,7 @@ def show_class(classname):
     friendList = get_friends()
     classTakers = cl['userlist']
     friendClassTakers = []
+    print friendList
     for f in friendList:
         if f.uid in classTakers:
             friendClassTakers.append(f)
