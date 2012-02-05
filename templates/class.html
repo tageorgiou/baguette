@@ -14,13 +14,15 @@
 <h1>{{ cl.name }}</h1>
 <h2>{{ cl.label }}</h2>
 <h3>{{ cl.professor }}</h2>
-{{ cl.description }}
+<p>{{ cl.description }}</p>
 <br />
+<p>
 {% if cl_is_taking %}
 <a href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
 {% else %}
 <a href="/class/{{ cl.name }}/take">Take this class</a>
 {% endif %}
+</p>
 
 {% for f in friends %}
 <div>
