@@ -38,9 +38,11 @@ def takeClass(cl, fbid):
     was_successful = (resp['status'] == '200')
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
+        cl['userlist'].append(fbid)
         db.classes.save(cl)
     else: 
         cl['users'][fbid] = NOACTION_CLASS_TAKE
+        cl['userlist'].append(fbid)
         db.classes.save(cl)
 #        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
     return str(resp) + '\\' + content['id']
@@ -56,8 +58,14 @@ def show_class(classname):
     if cl == None:
         return "404", 404
     cl_is_taking = fbid in cl['users']
+    friendList = get_friends()
+    classTakers = cl['userlist']
+    friendClassTakers = []
+    for f in friendList:
+        if f.uid2 in classTakers:
+            friendClassTakers.append(f)
     return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg,
-            cl_is_taking=cl_is_taking)
+            cl_is_taking=cl_is_taking, friends=friendClassTakers)
 
 @app.route('/class/<classname>/take')
 def take_class(classname):
@@ -85,6 +93,8 @@ def untakeClass(cl, fbid):
     if actionid == NOACTION_CLASS_TAKE:
         if fbid in cl['users']:
             del cl['users'][fbid]
+            cl['userlist'].remove(fbid)
+            db.classes.save(cl)
         return "Not taking"
     else:
         url = (url % actionid ) + classurl
@@ -94,6 +104,8 @@ def untakeClass(cl, fbid):
         if was_successful:
             if fbid in cl['users']:
                 del cl['users'][fbid]
+                cl['userlist'].remove(fbid)
+                db.classes.save(cl)
     return str(resp) + "---" + str(content)
 
 

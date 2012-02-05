@@ -14,6 +14,7 @@ class Class(Document):
         'description' : unicode,
         'professor' : unicode,
         'users': dict, #fbid : action fbid
+        'userlist': list,
     }
     use_dot_notation = True
 
