@@ -3,5 +3,16 @@
 <title>Baguette</title>
 {% endblock %}
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
-{% block body %}{% endblock %}
 
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                Regi
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+</body>
