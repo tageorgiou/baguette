@@ -3,6 +3,7 @@
 <title>Baguette</title>
 {% endblock %}
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}">
 
 <body>
     <div class="navbar navbar-fixed-top">
@@ -14,6 +15,7 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         {% block body %}{% endblock %}
     </div>
