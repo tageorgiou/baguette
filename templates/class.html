@@ -24,11 +24,13 @@
 {% endif %}
 </p>
 
-{% for f in friends %}
-<div>
-    <h4>{{ f.name }}</h4>
-<img src="{{ f.pic_square}}">
+<div class="row-fluid">
+    {% for f in friends %}
+    <div>
+        <h4>{{ f.name }}</h4>
+    <img src="{{ f.pic_square}}">
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 
 {% endblock %}
