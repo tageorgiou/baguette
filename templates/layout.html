@@ -1,6 +1,6 @@
 <!doctype html>
 {% block head %}
-<title>Regi</title>
+<title>regi</title>
 {% endblock %}
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
 <!-- disable responsive -->
@@ -21,7 +21,7 @@ filename='css/bootstrap-responsive.css') }}">-->
                     regi
                 </a>
                 <ul class="nav pull-right">
-                    <li><a>Thomas</a></li>
+                    <li><a>{{ session.first_name }}</a></li>
                     <li><a><i class="icon-search icon-white"></i></a></li>
                     <li><a>About</a></li>
                 </ul>
