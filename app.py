@@ -178,7 +178,9 @@ def main():
     access_token, expires = [x[0] for x in param.values()]
 
     resp, content = h.request(ME_URL % access_token)
-    fb_id = json.loads(content)['id']
+    user_profile = json.loads(content)
+    fb_id = user_profile['id']
+    first_name = user_profile['first_name']
 
     user = db.users.find_one({'fb_id': fb_id})
     created = 'Updated existing'
@@ -194,9 +196,11 @@ def main():
         db.users.save(user)
     session['fb_id'] = fb_id
     session['token'] = access_token
+    session['first_name'] = first_name
 
     return render_template('home.html', fbid=fb_id,
-            classes=find_registered_classes(fb_id), friends=get_friends())
+            classes=find_registered_classes(fb_id), friends=get_friends(),
+            first_name=first_name)
 #    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
 #    return content
 
