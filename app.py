@@ -82,8 +82,8 @@ def take_class(classname):
         return "not logged in"
     fbid = session['fb_id']
     dbg = takeClass(cl, fbid)
-    return 'yay. you are now taking %s %s' % (classname, dbg)
-    redirect('/class/%s' % classname)
+#    return 'yay. you are now taking %s %s' % (classname, dbg)
+    return redirect('/class/%s' % classname)
 
 def untakeClass(cl, fbid):
     url = 'https://graph.facebook.com/%s?'
@@ -114,6 +114,7 @@ def untakeClass(cl, fbid):
     return ""
 
 
+
 @app.route('/class/<classname>/untake')
 def untake_class(classname):
     cl = db.classes.find_one({'name': classname})
@@ -125,8 +126,8 @@ def untake_class(classname):
         return "not logged in"
     fbid = session['fb_id']
     dbg = untakeClass(cl, fbid)
-    return 'yay. you are now not taking %s %s' % (classname, dbg)
-    redirect('/class/%s' % classname)
+    #return 'yay. you are now not taking %s %s' % (classname, dbg)
+    return redirect('/class/%s' % classname)
 
 def find_registered_classes(fbid):
     classes = []
@@ -155,7 +156,12 @@ def get_friends():
     else:
         raise Exception()
 
-
+@app.route('/search')
+def search():
+    if 'q' not in request.args:
+        return "No query specified"
+    query = request.args['q']
+    return redirect('/class/%s' % query)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():

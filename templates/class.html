@@ -14,21 +14,29 @@
 <h1>{{ cl.name }}</h1>
 <h2>{{ cl.label }}</h2>
 <h3>{{ cl.professor }}</h2>
-<p>{{ cl.description }}</p>
-<br />
-<p>
-{% if cl_is_taking %}
-<a href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
-{% else %}
-<a href="/class/{{ cl.name }}/take">Take this class</a>
-{% endif %}
-</p>
-
 <div class="row-fluid">
+    <div class="span6">
+    <p>{{ cl.description }}</p>
+    <br />
+    <p>
+        {% if cl_is_taking %}
+        <a class="btn btn-danger" href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
+        {% else %}
+        <a class="btn btn-primary" href="/class/{{ cl.name }}/take">Take this class</a>
+        {% endif %}
+        </p>
+    </div>
+    <div class="span6">
+        Calendar
+
+    </div>
+</div>
+
+<div>
     {% for f in friends %}
-    <div>
+    <div style="float:left; text-align:center; padding: 10px">
         <h4>{{ f.name }}</h4>
-    <img src="{{ f.pic_square}}">
+    <img src="{{ f.pic_square }}">
     </div>
     {% endfor %}
 </div>
