@@ -6,6 +6,8 @@ import json
 import os
 import urlparse
 from urllib import urlencode
+from werkzeug.contrib.cache import SimpleCache
+cache = SimpleCache()
 
 from flask import Flask, request, redirect, render_template, session
 from database import db
@@ -66,7 +68,6 @@ def show_class(classname):
     print friendList[0]['uid']
     for f in friendList:
         if unicode(f['uid']) in classTakers:
-            print "HER"
             friendClassTakers.append(f)
     return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg,
             cl_is_taking=cl_is_taking, friends=friendClassTakers)
@@ -143,6 +144,11 @@ def get_friends():
         raise Exception()
     authtoken = session['token']
     fbid = session['fb_id']
+
+    friendsList = cache.get('friends_' + str(fbid))
+    if friendsList is not None:
+        return friendsList
+
     url = 'https://graph.facebook.com/fql?'
     endurl = urlencode({'access_token' : authtoken,
         'q': 'SELECT uid, name, pic_square FROM user WHERE uid = me() OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())'})
@@ -152,9 +158,10 @@ def get_friends():
     was_successful = (resp['status'] == '200')
     if was_successful:
         friendsList = json.loads(content)['data']
+        cache.set('friends_' + str(fbid), friendsList, 15*60) #15min
         return friendsList
     else:
-        raise Exception()
+        raise Exception("Need to login")
 
 @app.route('/search')
 def search():
@@ -206,5 +213,5 @@ def main():
 
 if __name__ == '__main__':
     app.debug = True
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5005))
     app.run(host='0.0.0.0', port=port)
