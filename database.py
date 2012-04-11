@@ -13,6 +13,8 @@ class Class(Document):
         'label' : unicode,
         'description' : unicode,
         'professor' : unicode,
+        #'lecture' : list,
+        #'recitation' : list,
         'users': dict, #fbid : action fbid
         'userlist': list,
     }
