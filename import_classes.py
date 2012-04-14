@@ -22,7 +22,7 @@ for cl in classes:
     dbcl['description'] = description
     dbcl['professor'] = professor
     dbcl.save()
-        
+       
     '''    
     if type == 'Class':
         name = cl['id']
@@ -42,8 +42,15 @@ for cl in classes:
     elif type == 'LectureSession':
         parent = cl['section-of']
         timePlace = cl['timeAndPlace'].split(" ")
-        time = timePlace[0]
-        place = timePlace[1]
+        if len(timePlace) == 4:
+            time = timePlace[0,2]
+            place = timePlace[3]
+        if timePlace[1] == "*TO":
+            time = "TBD"
+            place = "TBD"
+        else:
+            time = timePlace[0]
+            place = timePlace[1]
         cl = db.classes.find_one({'name': parent})
         cl['lecture'].append([time, place])
         cl.save()
