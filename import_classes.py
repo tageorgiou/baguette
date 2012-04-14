@@ -45,7 +45,7 @@ for cl in classes:
         if len(timePlace) == 4:
             time = timePlace[0,2]
             place = timePlace[3]
-        if timePlace[1] == "*TO":
+        if timePlace[0] == "*TO":
             time = "TBD"
             place = "TBD"
         else:
