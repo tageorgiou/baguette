@@ -26,10 +26,11 @@ for cl in classes:
 
 #second pass for sessions
 for cl in classes:
-    print label
+    cltype = cl['type']
+    print cl['label']
     if cltype == 'LectureSession':
         parent = cl['section-of']
-        timePlace = cl['timeAndPlace'].split(" ")
+        timePlace = cl['timeAndPlace'].split()
         label = cl['label']
         if len(timePlace) == 4:
             time = timePlace[0:2]
@@ -53,9 +54,9 @@ for cl in classes:
         dbcl['sessions'].append(sess)
         dbcl.save()
         
-    elif type == 'RecitationSession':
+    elif cltype == 'RecitationSession':
         parent = cl['section-of']
-        timePlace = cl['timeAndPlace'].split(" ")
+        timePlace = cl['timeAndPlace'].split()
         time = timePlace[0]
         place = timePlace[1]
         dbcl = db.classes.Class.find_one({'name': unicode(parent)})
@@ -71,6 +72,7 @@ for cl in classes:
         dbcl['sessions'].append(sess)
         dbcl.save()
     elif cltype == 'Class':
+        print 'class, continue'
         continue
     else:
         print cltype
