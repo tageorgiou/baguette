@@ -41,16 +41,19 @@ for cl in classes:
 
     elif type == 'LectureSession':
         parent = cl['section-of']
-        timePlace = cl['timeAndPlace']
+        timePlace = cl['timeAndPlace'].split(" ")
+        time = timePlace[0]
+        place = timePlace[1]
         cl = db.classes.find_one({'name': parent})
-        cl['lecture'].append(timePlace)
+        cl['lecture'].append([time, place])
         cl.save()
         
     elif type == 'RecitationSession':
         parent = cl['section-of']
-        timePlace = cl['timeAndPlace']
+        timePlace = cl['timeAndPlace'].split(" ")
+        time = timePlace[0]
+        place = timePlace[1]
         cl = db.classes.find_one({'name': parent})
-        cl['recitation'].append(timePlace)
+        cl['recitation'].append([time, place])
         cl.save()
     '''
-        
