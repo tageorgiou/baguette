@@ -1,7 +1,7 @@
 import json
 from database import db
 
-db.drop_collection('classes')
+#db.drop_collection('classes')
 
 classes = json.load(open('res/courses.json'))["items"]
 
@@ -16,7 +16,7 @@ for cl in classes:
     if professor == None:
         professor = ''
             
-    dbcl = db.classes.Class()
+    dbcl = db.classes.Class.find_one({'name': name}) or db.classes.Class()
     dbcl['name'] = name
     dbcl['label'] = label
     dbcl['description'] = description
