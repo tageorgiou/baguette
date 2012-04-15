@@ -231,10 +231,11 @@ def main():
         session['token'] = access_token
         session['first_name'] = first_name
     else:
-        fb_id = 1111
-        get_friends = lambda : []
-        first_name='Thomas'
-        classes = []
+        pass
+        #fb_id = 1111
+        #get_friends = lambda : []
+        #first_name='Thomas'
+        #classes = []
 
     return render_template('home.html', fbid=fb_id,
             classes=find_registered_classes(fb_id), friends=get_friends(),
