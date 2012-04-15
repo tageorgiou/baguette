@@ -6,6 +6,7 @@ import json
 import os
 import urlparse
 from urllib import urlencode
+import re
 from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 
@@ -171,40 +172,69 @@ def search():
     query = request.args['q']
     return redirect('/class/%s' % query)
 
+@app.route('/autocomplete')
+def autocomplete():
+    if 'term' not in request.args:
+        return "No query specified"
+    query = re.escape(request.args['term'])
+    print query
+    results = []
+    mongoquery = {'$or' : [
+        {'professor': {'$regex': query, '$options': 'i'}}, #case insensitive
+        {'name': {'$regex': '^' + query}},
+        ]}
+
+    for c in db.classes.Class.find(mongoquery).limit(8):
+        val = {'label': c['name'] + ' ' + c['label'],
+                'value': 'bLAH',
+                'title': 'tttt',
+                }
+        results.append(val)
+    print results
+    return json.dumps(results)
+
+BYPASS = False
+
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    if 'code' not in request.args:
-        return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
-    code = request.args.get('code', None)
-    h = httplib2.Http()
-    url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN, FB_APP_SECRET, code)
+    if not BYPASS:
+        if 'code' not in request.args:
+            return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
+        code = request.args.get('code', None)
+        h = httplib2.Http()
+        url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN, FB_APP_SECRET, code)
+  
+        resp, content = h.request(url)
+        if resp['status'] != '200':
+            return "Error requesting token.", 500
+        param = urlparse.parse_qs(content)
+        access_token, expires = [x[0] for x in param.values()]
 
-    resp, content = h.request(url)
-    if resp['status'] != '200':
-        return "Error requesting token.", 500
-    param = urlparse.parse_qs(content)
-    access_token, expires = [x[0] for x in param.values()]
+        resp, content = h.request(ME_URL % access_token)
+        user_profile = json.loads(content)
+        fb_id = user_profile['id']
+        first_name = user_profile['first_name']
 
-    resp, content = h.request(ME_URL % access_token)
-    user_profile = json.loads(content)
-    fb_id = user_profile['id']
-    first_name = user_profile['first_name']
-
-    user = db.users.find_one({'fb_id': fb_id})
-    created = 'Updated existing'
-    if user is None:
-        created = 'Created new'
-        user = db.users.User()
-        user['token'] = unicode(access_token)
-        user['fb_id'] = fb_id
-        user.save()
+        user = db.users.find_one({'fb_id': fb_id})
+        created = 'Updated existing'
+        if user is None:
+            created = 'Created new'
+            user = db.users.User()
+            user['token'] = unicode(access_token)
+            user['fb_id'] = fb_id
+            user.save()
+        else:
+            user['token'] = unicode(access_token)
+            user['fb_id'] = fb_id
+            db.users.save(user)
+        session['fb_id'] = fb_id
+        session['token'] = access_token
+        session['first_name'] = first_name
     else:
-        user['token'] = unicode(access_token)
-        user['fb_id'] = fb_id
-        db.users.save(user)
-    session['fb_id'] = fb_id
-    session['token'] = access_token
-    session['first_name'] = first_name
+        fb_id = 1111
+        get_friends = lambda : []
+        first_name='Thomas'
+        classes = []
 
     return render_template('home.html', fbid=fb_id,
             classes=find_registered_classes(fb_id), friends=get_friends(),
