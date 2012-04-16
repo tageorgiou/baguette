@@ -186,7 +186,7 @@ def autocomplete():
 
     for c in db.classes.Class.find(mongoquery).limit(8):
         val = {'label': c['name'] + ' ' + c['label'],
-                'value': 'bLAH',
+                'value': c['name'],
                 'title': 'tttt',
                 }
         results.append(val)
@@ -232,10 +232,10 @@ def main():
         session['first_name'] = first_name
     else:
         pass
-        #fb_id = 1111
-        #get_friends = lambda : []
-        #first_name='Thomas'
-        #classes = []
+#        fb_id = 1111
+#        get_friends = lambda : []
+#        first_name='Thomas'
+#        classes = []
 
     return render_template('home.html', fbid=fb_id,
             classes=find_registered_classes(fb_id), friends=get_friends(),
