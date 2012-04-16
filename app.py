@@ -243,6 +243,14 @@ def main():
 #    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
 #    return content
 
+@app.route('/about')
+def about():
+    fbid = "nope"
+    dbg = 'eee'
+    if 'fb_id' in session:
+        fbid = session['fb_id']
+    return render_template('about.html', fbid=fbid)
+
 if __name__ == '__main__':
     app.debug = True
     port = int(os.environ.get('PORT', 5005))
