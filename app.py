@@ -63,7 +63,10 @@ def show_class(classname):
     if cl == None:
         return "404", 404
     cl_is_taking = fbid in cl['users']
-    friendList = get_friends()
+    if BYPASS:
+        friendList = []
+    else:
+        friendList = get_friends()
     classTakers = cl['userlist']
     print classTakers
     friendClassTakers = []
@@ -250,6 +253,10 @@ def about():
     if 'fb_id' in session:
         fbid = session['fb_id']
     return render_template('about.html', fbid=fbid)
+
+@app.route('/calendar')
+def calendar():
+    return render_template('calendar.html')
 
 if __name__ == '__main__':
     app.debug = True
