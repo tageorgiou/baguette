@@ -12,7 +12,7 @@ class Class(Document):
         'name' : unicode,
         'label' : unicode,
         'description' : unicode,
-        'professor' : unicode,
+        'professor' : list,
         #'lecture' : list,
         #'recitation' : list,
         'users': dict, #fbid : action fbid

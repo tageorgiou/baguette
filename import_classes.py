@@ -15,13 +15,28 @@ for cl in classes:
         label = cl['label']
         description = cl['description']
         professor = cl['in-charge']
-        if professor == None:
-            professor = ''
+        if professor == 'null':
+            prof = ['']
+        else: 
+            prof = professor.split(',')
+            if prof[1] == '':
+                prof = [prof[0]]
+            else: prof = [prof[1][1] + '. ' + prof[0]]
+        springProf = cl['spring_instructors']
+        for p in springProf:
+            mult = p.split(':')
+            if len(mult) != 1:
+                if len(mult) == 7:
+                    prof.append('R. B. Melrose')
+                    prof.append('H.R. Miller')
+                    p = ''
+                else: p = mult[1][1:]
+            if p != prof[0] and p != '': prof.append(p)
             
         dbcl['name'] = name
         dbcl['label'] = label
         dbcl['description'] = description
-        dbcl['professor'] = professor
+        dbcl['professor'] = prof
         dbcl.save()
 
 #second pass for sessions
