@@ -75,8 +75,10 @@ def show_class(classname):
     for f in friendList:
         if unicode(f['uid']) in classTakers:
             friendClassTakers.append(f)
+    schedule = makeClassSchedule(cl)
     return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg,
-            cl_is_taking=cl_is_taking, friends=friendClassTakers)
+            cl_is_taking=cl_is_taking, friends=friendClassTakers,
+            schedule=schedule)
 
 @app.route('/class/<classname>/take')
 def take_class(classname):
