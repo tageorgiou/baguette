@@ -54,9 +54,9 @@ top: 80px;
 <h2>Hi {{ first_name }}!</h2>
 <h3>Regi is an interactive class scheduler for <a href="http://mit.edu">MIT</a></h3>
 <h3>You are currently registered for:</h3>
-<ul>
+<ul style="list-style: none;">
     {% for c in classes %}
-    <li><a href="/class/{{c.name}}">{{c.name}}</a></li>
+    <a href="/class/{{c.name}}">{{c.name}}</a></br>
     {% endfor %}
 </ul>
 
@@ -67,11 +67,11 @@ top: 80px;
 </form>-->
 
 <form action="search" method="get" class="form-search">
-<div class="autocomplete-search-box">
+<div class="autocomplete-search-box" >
     <input id="searchbox" name='q' class="ui-autocomplete-input search-query"
     placeholder="Search for a class">
     <input type="submit" value="Search" class="btn">
-    <div id="autocomplete-suggestions">
+    <div id="autocomplete-suggestions" style="text-align:center; right:300px;">
     </div>
 </div>
 </form>
