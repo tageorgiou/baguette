@@ -33,11 +33,11 @@
 <li></li>
 <li></li>
 <li></li>
-<div class='color-0 schedule-block' days='MWF' style='top: 219.0px; height: 40.0px;'>
+<!--<div class='color-0 schedule-block' days='MWF' style='top: 219.0px; height: 40.0px;'>
 <span class='course-name'>6.046</span>
-<!--<span class='course-title'>Data Structures</span>-->
+<span class='course-title'>Data Structures</span>
 <span class='section-type label'>LEC</span>
-</div>
+</div>-->
 
 </ul>
 <ul class='schedule-day T' day='T'>
@@ -193,4 +193,18 @@ span class='data'>Data abstractions: elementary data structures (lists, stacks, 
         alert(cl.hi);
     }
     displayClass({'hi': 5});
+</script>
+<script>
+    var schedule = {{schedule | tojson | safe}};
+    for (var i = 0; i < schedule.length; i++) {
+        //alert(schedule[i]);
+        $.tmpl("<div class='color-${color} schedule-block' style='top: ${top}px; \
+            height: ${height}px;'><span class='course-name'>${name}</span> \
+            <span class='section-type label'>LEC</span> \
+        </div>", 
+        {"name": schedule[i].name,
+         "top": (schedule[i].time-8)*47+31,
+         "height": schedule[i].length * 46,
+        "color": schedule[i].color}).appendTo("[day='" + schedule[i].day + "']");
+    }
 </script>

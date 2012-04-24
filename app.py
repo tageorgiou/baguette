@@ -267,13 +267,36 @@ def calendar():
 def getClassesForFBID(fbid):
     return db.classes.Class.find({'userlist': unicode(fbid)})
 
+def makeClassSchedule(cl, color=0):
+    schedule = []
+    time = getTimeForClass(cl)
+    if '-' in time:
+        return []
+    else:
+        days = re.match('([MTWRF]+)', time).group(1)
+        ttime = re.match('[MTWRF]*([0-9]+)', time).group(1)
+        ittime = int(ttime)
+        if ittime < 8:
+            ittime += 12
+        for c in days:
+            s = {
+                    'name': cl['name'],
+                    'day': c,
+                    'time': ittime,
+                    'length': 1.0,
+                    'color': color,
+                }
+            schedule.append(s)
+    return schedule
+
 @app.route('/user/<userid>')
 def show_user(userid):
     fbid = ''
     if 'fb_id' in session:
         fbid = session['fb_id']
     else:
-        raise AuthError
+        if not BYPASS:
+            raise AuthError
     if BYPASS:
         friendList = []
     else:
@@ -282,9 +305,15 @@ def show_user(userid):
     #    if unicode(f['uid']) in classTakers:
     #        friendClassTakers.append(f)
     classes = getClassesForFBID('552102999')
+    schedule = []
+    colorcounter = 0
     for cl in classes:
         print getTimeForClass(cl)
-    return render_template('user.html', classes=classes, fbid=fbid)
+        schedule += makeClassSchedule(cl, color=colorcounter)
+        colorcounter += 1
+    print schedule
+    return render_template('user.html', classes=classes, fbid=fbid,
+            schedule=schedule)
 
 def getTimeForClass(cl):
     for s in cl['sessions']:
