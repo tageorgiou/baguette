@@ -21,6 +21,7 @@ OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&
 TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 ME_URL = "https://graph.facebook.com/me?access_token=%s"
 NOACTION_CLASS_TAKE = '-1'
+BYPASS = True
 
 app = Flask(__name__)
 app.debug = True
@@ -70,7 +71,7 @@ def show_class(classname):
     classTakers = cl['userlist']
     print classTakers
     friendClassTakers = []
-    print friendList[0]['uid']
+    #print friendList[0]['uid']
     for f in friendList:
         if unicode(f['uid']) in classTakers:
             friendClassTakers.append(f)
@@ -196,7 +197,7 @@ def autocomplete():
     print results
     return json.dumps(results)
 
-BYPASS = False
+
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -257,6 +258,31 @@ def about():
 @app.route('/calendar')
 def calendar():
     return render_template('calendar.html')
+
+@app.route('/user/<userid>')
+def show_user(userid):
+    fbid = "nope"
+    dbg = 'eee'
+    cl = db.classes.find_one({'name': classname})
+    if 'fb_id' in session:
+        fbid = session['fb_id']
+        #dbg = str(takeClass(cl))
+    if cl == None:
+        return "404", 404
+    cl_is_taking = fbid in cl['users']
+    if BYPASS:
+        friendList = []
+    else:
+        friendList = get_friends()
+    classTakers = cl['userlist']
+    print classTakers
+    friendClassTakers = []
+    #print friendList[0]['uid']
+    for f in friendList:
+        if unicode(f['uid']) in classTakers:
+            friendClassTakers.append(f)
+    return render_template('user.html', cl=cl, fbid=fbid, dbg=dbg,
+            cl_is_taking=cl_is_taking, friends=friendClassTakers)
 
 if __name__ == '__main__':
     app.debug = True
