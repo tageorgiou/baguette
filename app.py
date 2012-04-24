@@ -200,6 +200,10 @@ BYPASS = False
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
+    fb_id = 1111
+    get_friends = lambda : []
+    first_name='Thomas'
+    classes = []
     if not BYPASS:
         if 'code' not in request.args:
             return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
@@ -235,10 +239,6 @@ def main():
         session['first_name'] = first_name
     else:
         pass
-#        fb_id = 1111
-#        get_friends = lambda : []
-#        first_name='Thomas'
-#        classes = []
 
     return render_template('home.html', fbid=fb_id,
             classes=find_registered_classes(fb_id), friends=get_friends(),
