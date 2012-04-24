@@ -17,7 +17,7 @@ class Class(Document):
         #'recitation' : list,
         'users': dict, #fbid : action fbid
         'userlist': list,
-        'sessions': list,
+        'sessions': list, # type, time, place
     }
     use_dot_notation = True
 

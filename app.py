@@ -282,7 +282,14 @@ def show_user(userid):
     #    if unicode(f['uid']) in classTakers:
     #        friendClassTakers.append(f)
     classes = getClassesForFBID('552102999')
+    for cl in classes:
+        print getTimeForClass(cl)
     return render_template('user.html', classes=classes, fbid=fbid)
+
+def getTimeForClass(cl):
+    for s in cl['sessions']:
+        if s['type'] == u'lecture':
+            return s['time']
 
 if __name__ == '__main__':
     app.debug = True
