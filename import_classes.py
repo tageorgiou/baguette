@@ -1,7 +1,8 @@
 import json
 from database import db
+import sys
 
-db.drop_collection('classes')
+#db.drop_collection('classes')
 
 classes = json.load(open('res/courses.json'))["items"]
 
@@ -38,6 +39,8 @@ for cl in classes:
         dbcl['description'] = description
         dbcl['professor'] = prof
         dbcl.save()
+
+sys.exit(0)
 
 #second pass for sessions
 for cl in classes:
