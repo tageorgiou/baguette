@@ -14,7 +14,7 @@
     }
 </style>
 {% block body %}
-<div style="padding:20px;padding-bottom:120px; center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
+<div style="margin-top:-21px;padding:20px;padding-bottom:120px; center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
 	<!--<h1>Hi {{ fbid }}</h1>-->
 	<h1>{{ cl.name }}</h1>
 	<h2>{{ cl.label }}</h2>
@@ -33,11 +33,24 @@
 	    </div>
 	    <div class="span8">
                 {% include "calendar-partial.html" %}
-	
+			<div>
+				{% for s in cl.sessions %}
+				<div style="float:left; text-align:center; padding: 10px">
+					{% if s['type']=='lecture'%}
+					<h4>Lecture </h4>
+					<p>{{ s['time']}}, {{s['place']}}</p>
+					{% else %}
+					<h4>Recitation</h4>
+					<p>{{ s['time']}}, {{s['place']}}</p>
+					{% endif %}
+				</div>
+				{% endfor %}
+			</div>
 	    </div>
 	</div>
 	
 	<div>
+		Friends enrolled
 	    {% for f in friends %}
 	    <div style="float:left; text-align:center; padding: 10px">
 	        <h4>{{ f.name }}</h4>
@@ -46,18 +59,6 @@
 	    {% endfor %}
 	</div>
 	
-	<div>
-		{% for s in cl.sessions %}
-		<div style="float:left; text-align:center; padding: 10px">
-			{% if s['type']=='lecture'%}
-			<h4>Lecture </h4>
-			<p>{{ s['time']}}, {{s['place']}}</p>
-			{% else %}
-			<h4>Recitation</h4>
-			<p>{{ s['time']}}, {{s['place']}}</p>
-			{% endif %}
-		</div>
-		{% endfor %}
-	</div>
+	
 </div>
 {% endblock %}
