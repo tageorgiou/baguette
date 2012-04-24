@@ -27,7 +27,7 @@
         </p>
     </div>
     <div class="span6">
-        Calendar
+        Calander
 
     </div>
 </div>
@@ -39,6 +39,20 @@
     <img src="{{ f.pic_square }}">
     </div>
     {% endfor %}
+</div>
+
+<div>
+	{% for s in cl.sessions %}
+	<div style="float:left; text-align:center; padding: 10px">
+		{% if s['type']=='lecture'%}
+		<h4>Lecture </h4>
+		<p>{{ s['time']}}, {{s['place']}}</p>
+		{% else %}
+		<h4>Recitation</h4>
+		<p>{{ s['time']}}, {{s['place']}}</p>
+		{% endif %}
+	</div>
+	{% endfor %}
 </div>
 
 {% endblock %}
