@@ -21,7 +21,7 @@ OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&
 TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 ME_URL = "https://graph.facebook.com/me?access_token=%s"
 NOACTION_CLASS_TAKE = '-1'
-BYPASS = True
+BYPASS = False
 
 app = Flask(__name__)
 app.debug = True
