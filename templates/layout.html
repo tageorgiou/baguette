@@ -13,28 +13,29 @@ filename='css/bootstrap-responsive.css') }}">-->
     type="text/javascript"></script>
 <style>
     body {
+    	
         padding-top: 60px; /* make the container go to the bottom of the top bar
         */
     }
 </style>
 
-<body>
+<body style="background-image: url(static/img/brushed_alu.png);">
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="/">
-                    regi
+                	regi                    
                 </a>
                 <ul class="nav pull-right">
                     <li><a>{{ session.first_name }}</a></li>
-                    <li><a><i class="icon-search icon-white"></i></a></li>
+                    <li><a href="/"><i class="icon-search icon-white"></i></a></li>
                     <li><a href="/about">About</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" >
         {% block body %}{% endblock %}
     </div>
 </body>
