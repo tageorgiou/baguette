@@ -8,51 +8,56 @@
     <eta property="og:url" content="http://baguette.herokuapp.com/class/{{ cl.name }}" />
 </head>
 {% endblock %}
-
+<style>
+    body {
+        background-image: url(static/img/brushed_alu.png);
+    }
+</style>
 {% block body %}
-<!--<h1>Hi {{ fbid }}</h1>-->
-<h1>{{ cl.name }}</h1>
-<h2>{{ cl.label }}</h2>
-<h3>{{ ", ".join(cl.professor) }}</h2>
-<div class="row-fluid">
-    <div class="span6">
-    <p>{{ cl.description }}</p>
-    <br />
-    <p>
-        {% if cl_is_taking %}
-        <a class="btn btn-danger" href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
-        {% else %}
-        <a class="btn btn-primary" href="/class/{{ cl.name }}/take">Take this class</a>
-        {% endif %}
-        </p>
-    </div>
-    <div class="span6">
-        Calander
-
-    </div>
-</div>
-
-<div>
-    {% for f in friends %}
-    <div style="float:left; text-align:center; padding: 10px">
-        <h4>{{ f.name }}</h4>
-    <img src="{{ f.pic_square }}">
-    </div>
-    {% endfor %}
-</div>
-
-<div>
-	{% for s in cl.sessions %}
-	<div style="float:left; text-align:center; padding: 10px">
-		{% if s['type']=='lecture'%}
-		<h4>Lecture </h4>
-		<p>{{ s['time']}}, {{s['place']}}</p>
-		{% else %}
-		<h4>Recitation</h4>
-		<p>{{ s['time']}}, {{s['place']}}</p>
-		{% endif %}
+<div style="padding:20px;padding-bottom:120px; center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
+	<!--<h1>Hi {{ fbid }}</h1>-->
+	<h1>{{ cl.name }}</h1>
+	<h2>{{ cl.label }}</h2>
+	<h3>{{ ", ".join(cl.professor) }}</h2>
+	<div class="row-fluid">
+	    <div class="span6">
+	    <p>{{ cl.description }}</p>
+	    <br />
+	    <p>
+	        {% if cl_is_taking %}
+	        <a class="btn btn-danger" href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
+	        {% else %}
+	        <a class="btn btn-primary" href="/class/{{ cl.name }}/take">Take this class</a>
+	        {% endif %}
+	        </p>
+	    </div>
+	    <div class="span6">
+	        Calander
+	
+	    </div>
 	</div>
-	{% endfor %}
+	
+	<div>
+	    {% for f in friends %}
+	    <div style="float:left; text-align:center; padding: 10px">
+	        <h4>{{ f.name }}</h4>
+	    <img src="{{ f.pic_square }}">
+	    </div>
+	    {% endfor %}
+	</div>
+	
+	<div>
+		{% for s in cl.sessions %}
+		<div style="float:left; text-align:center; padding: 10px">
+			{% if s['type']=='lecture'%}
+			<h4>Lecture </h4>
+			<p>{{ s['time']}}, {{s['place']}}</p>
+			{% else %}
+			<h4>Recitation</h4>
+			<p>{{ s['time']}}, {{s['place']}}</p>
+			{% endif %}
+		</div>
+		{% endfor %}
+	</div>
 </div>
-
 {% endblock %}
