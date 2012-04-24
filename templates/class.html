@@ -30,34 +30,34 @@
 	        <a class="btn btn-primary" href="/class/{{ cl.name }}/take">Take this class</a>
 	        {% endif %}
 	        </p>
+            <div>
+                    Friends enrolled
+                {% for f in friends %}
+                <div style="float:left; text-align:center; padding: 10px">
+                    <h4>{{ f.name }}</h4>
+                <img src="{{ f.pic_square }}">
+                </div>
+                {% endfor %}
+            </div>
 	    </div>
 	    <div class="span8">
+                <div>
+                        {% for s in cl.sessions %}
+                        <div style="float:left; text-align:center; padding: 10px">
+                                {% if s['type']=='lecture'%}
+                                <h4>Lecture </h4>
+                                <p>{{ s['time']}}, {{s['place']}}</p>
+                                {% else %}
+                                <h4>Recitation</h4>
+                                <p>{{ s['time']}}, {{s['place']}}</p>
+                                {% endif %}
+                        </div>
+                        {% endfor %}
+                </div>
                 {% include "calendar-partial.html" %}
-			<div>
-				{% for s in cl.sessions %}
-				<div style="float:left; text-align:center; padding: 10px">
-					{% if s['type']=='lecture'%}
-					<h4>Lecture </h4>
-					<p>{{ s['time']}}, {{s['place']}}</p>
-					{% else %}
-					<h4>Recitation</h4>
-					<p>{{ s['time']}}, {{s['place']}}</p>
-					{% endif %}
-				</div>
-				{% endfor %}
-			</div>
 	    </div>
 	</div>
 	
-	<div>
-		Friends enrolled
-	    {% for f in friends %}
-	    <div style="float:left; text-align:center; padding: 10px">
-	        <h4>{{ f.name }}</h4>
-	    <img src="{{ f.pic_square }}">
-	    </div>
-	    {% endfor %}
-	</div>
 	
 	
 </div>
