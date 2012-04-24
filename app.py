@@ -198,11 +198,16 @@ def autocomplete():
     return json.dumps(results)
 
 
+def get_user_profile(access_token):
+    h = httplib2.Http()
+    resp, content = h.request(ME_URL % access_token)
+    user_profile = json.loads(content)
+    return user_profile
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
     fb_id = 1111
-    get_friends = lambda : []
+    friends = []
     first_name='Thomas'
     classes = []
     if not BYPASS:
@@ -218,8 +223,7 @@ def main():
         param = urlparse.parse_qs(content)
         access_token, expires = [x[0] for x in param.values()]
 
-        resp, content = h.request(ME_URL % access_token)
-        user_profile = json.loads(content)
+        user_profile = get_user_profile(access_token)
         fb_id = user_profile['id']
         first_name = user_profile['first_name']
 
@@ -238,11 +242,12 @@ def main():
         session['fb_id'] = fb_id
         session['token'] = access_token
         session['first_name'] = first_name
+        friends = get_friends()
     else:
         pass
 
     return render_template('home.html', fbid=fb_id,
-            classes=find_registered_classes(fb_id), friends=get_friends(),
+            classes=find_registered_classes(fb_id), friends=friends,
             first_name=first_name)
 #    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
 #    return content
@@ -259,30 +264,25 @@ def about():
 def calendar():
     return render_template('calendar.html')
 
+def getClassesForFBID(fbid):
+    return db.classes.Class.find({'userlist': unicode(fbid)})
+
 @app.route('/user/<userid>')
 def show_user(userid):
-    fbid = "nope"
-    dbg = 'eee'
-    cl = db.classes.find_one({'name': classname})
+    fbid = ''
     if 'fb_id' in session:
         fbid = session['fb_id']
-        #dbg = str(takeClass(cl))
-    if cl == None:
-        return "404", 404
-    cl_is_taking = fbid in cl['users']
+    else:
+        raise AuthError
     if BYPASS:
         friendList = []
     else:
         friendList = get_friends()
-    classTakers = cl['userlist']
-    print classTakers
-    friendClassTakers = []
-    #print friendList[0]['uid']
-    for f in friendList:
-        if unicode(f['uid']) in classTakers:
-            friendClassTakers.append(f)
-    return render_template('user.html', cl=cl, fbid=fbid, dbg=dbg,
-            cl_is_taking=cl_is_taking, friends=friendClassTakers)
+    #for f in friendList:
+    #    if unicode(f['uid']) in classTakers:
+    #        friendClassTakers.append(f)
+    classes = getClassesForFBID('552102999')
+    return render_template('user.html', classes=classes, fbid=fbid)
 
 if __name__ == '__main__':
     app.debug = True
