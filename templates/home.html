@@ -17,7 +17,40 @@
 {% endblock %}
 
 {% block body %}
-<h1>Regi</h1>
+
+<script language="Javascript"> 
+<!-- 
+function ShowPicture(id,Source) { 
+if (Source=="1"){ 
+if (document.layers) document.layers[''+id+''].visibility = "show" 
+else if (document.all) document.all[''+id+''].style.visibility = "visible" 
+else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "visible" 
+} 
+else 
+if (Source=="0"){ 
+if (document.layers) document.layers[''+id+''].visibility = "hide" 
+else if (document.all) document.all[''+id+''].style.visibility = "hidden" 
+else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "hidden" 
+} 
+} 
+//--> 
+</script> 
+<style type="text/css"> 
+#Style { 
+float:left;
+position:absolute; 
+visibility:hidden;  
+padding:5px; 
+left:350px;
+top: 80px;
+
+} 
+</style> 
+
+<div style="float:center; text-align:center;">
+	
+<a href="/" onMouseOver="ShowPicture('Style',1)" onMouseOut="ShowPicture('Style',0)"><img src="static/img/WebLogo.png" alt="regi logo"/></a>
+<div id="Style"><img src="static/img/Blurb.png" style="width:250px"></div> 
 <h2>Hi {{ first_name }}!</h2>
 <h3>Regi is an interactive class scheduler for <a href="http://mit.edu">MIT</a></h3>
 <h3>You are currently registered for:</h3>
@@ -52,5 +85,5 @@
         });
 </script>
 <iframe src="//www.facebook.com/plugins/facepile.php?href=http%3A%2F%2Fbaguette.herokuapp.com%2Fclass%2F6.046&amp;action=mitcourses%3Ais+taking&amp;size=large&amp;max_rows=1&amp;width=300&amp;colorscheme=light&amp;appId=196886180398409" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
-
+</div>
 {% endblock %}
