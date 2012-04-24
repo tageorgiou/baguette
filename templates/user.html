@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block head %}
+<head>
+</head>
+{% endblock %}
+<style>
+    body {
+        background-image: url(static/img/brushed_alu.png);
+    }
+</style>
+{% block body %}
+<!--<h1>Hi {{ fbid }}</h1>-->
+
+
+<div style="float:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
+<div class="row-fluid" style="padding: 20px; ">
+	
+    <div class="span6">
+    	<h3>USER NAME HERE</h3>
+		<p> Calendar</p>
+    </div>
+    <div class="span6" style="padding-top: 30px;">
+    	<div style="float:center;">
+    		<img src="static/img/1RegiIcon.png"/>
+    		<img src="static/img/1RegiIcon.png">
+    	</div>
+    	<h5>You are both enrolled in:</h5>
+    	<ul>
+	    {% for c in classes %}
+	    <li><a href="/class/{{c.name}}">{{c.name}}</a></li>
+	    {% endfor %}
+		</ul>
+
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
