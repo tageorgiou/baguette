@@ -204,6 +204,7 @@ def get_user_profile(access_token):
     h = httplib2.Http()
     resp, content = h.request(ME_URL % access_token)
     user_profile = json.loads(content)
+    print user_profile
     return user_profile
 
 @app.route('/', methods=['GET', 'POST'])
@@ -216,8 +217,8 @@ def main():
         if 'code' not in request.args:
             #return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
             pass
-        code = request.args.get('code',
-            'AQDOlT2Geph7__LHHi3VOyePP4kzTQ-i_VHbgA381AtDV5Np3tzkakHBOFiDokSwaRImkaB-n9qzo8T6f5Q6_lauY5ZSoRu_by997UL8QiLm6_Oof36ztB4lLa9bPfZuoyWr4vu-ixQEUOecVfXEs8uwNZRjc3fOyjP9MqF_bICuyUfUgzJKWnZ-Sdc-hwLC108#_=_')
+        code = request.args.get('code')#,
+#            'AQDOlT2Geph7__LHHi3VOyePP4kzTQ-i_VHbgA381AtDV5Np3tzkakHBOFiDokSwaRImkaB-n9qzo8T6f5Q6_lauY5ZSoRu_by997UL8QiLm6_Oof36ztB4lLa9bPfZuoyWr4vu-ixQEUOecVfXEs8uwNZRjc3fOyjP9MqF_bICuyUfUgzJKWnZ-Sdc-hwLC108#_=_')
         h = httplib2.Http()
         url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN, FB_APP_SECRET, code)
   
