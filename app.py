@@ -20,12 +20,30 @@ UNSECURE_DOMAIN = 'http://baguette.herokuapp.com/'
 OAUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s&scope=publish_actions'
 TOKEN_ENDPOINT = 'https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s'
 ME_URL = "https://graph.facebook.com/me?access_token=%s"
+FBID_USER_URL = "https://graph.facebook.com/%s"
 NOACTION_CLASS_TAKE = '-1'
 BYPASS = False
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
+
+def getUserProfile(fbid):
+    user_profile = cache.get('user_profile_' + str(fbid))
+    if user_profile is not None:
+        return user_profile
+    
+    url = FBID_USER_URL % fbid
+    h = httplib2.Http()
+    resp, content = h.request(url, "GET", '')
+    was_successful = (resp['status'] == '200')
+    if was_successful:
+        user_profile = json.loads(content)
+        cache.set('user_profile_' + str(fbid), user_profile, 15*60) #15min
+        return user_profile
+    else:
+        raise Exception("Error getting user profile")
+
 
 def takeClass(cl, fbid):
     """ Given a class and fbid for user, take the class"""
@@ -49,8 +67,6 @@ def takeClass(cl, fbid):
         cl['users'][fbid] = NOACTION_CLASS_TAKE
         cl['userlist'].append(fbid)
         db.classes.save(cl)
-#        return redirect(FB_DOMAIN + '/class/%s' % cl.name)
-#    return str(resp) + '\\' + content['id']
     return ""
 
 @app.route('/class/<classname>')
@@ -121,8 +137,6 @@ def untakeClass(cl, fbid):
                 db.classes.save(cl)
     #return str(resp) + "---" + str(content)
     return ""
-
-
 
 @app.route('/class/<classname>/untake')
 def untake_class(classname):
@@ -330,6 +344,7 @@ def show_user(userid):
     #for f in friendList:
     #    if unicode(f['uid']) in classTakers:
     #        friendClassTakers.append(f)
+    user_profile = getUserProfile(userid)
     classes = getClassesForFBID(userid)
     schedule = []
     colorcounter = 0
@@ -339,7 +354,7 @@ def show_user(userid):
         colorcounter += 1
     print schedule
     return render_template('user.html', classes=classes, fbid=fbid,
-            schedule=schedule)
+            schedule=schedule, user_profile=user_profile)
 
 def getTimeForClass(cl):
     for s in cl['sessions']:
