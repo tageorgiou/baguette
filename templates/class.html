@@ -26,7 +26,7 @@
 	    	
 	    	<div>
                         {% for s in cl.sessions %}
-                        <div style="float:left; text-align:center;">
+                        <div style="float:left; text-align:center; padding: 3px">
                                 {% if s['type']=='lecture'%}
                                 <h4>Lecture </h4>
                                 <p>{{ s['time']}}, {{s['place']}}</p>
@@ -59,7 +59,7 @@
     	<div class="span3" style="margin-left: 40px">
     		    <h4>Friends enrolled</h4></br>
                 {% for f in friends %}
-                <div style="float:left; text-align:center; padding: 10px">
+                <div style="float:center; text-align:center; padding: 10px">
                     <h4>{{ f.name }}</h4>
                 <img src="{{ f.pic_square }}">
                 </div>
