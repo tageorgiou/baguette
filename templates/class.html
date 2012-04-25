@@ -15,18 +15,18 @@
     
 </style>
 {% block body %}
-<div style="margin-top:-21px;padding:20px;padding-bottom:120px; float:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
+<div style="margin-top:-21px;padding:20px;padding-left:30px; float:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
 	<!--<h1>Hi {{ fbid }}</h1>-->
 	<h1>{{ cl.name }}</h1>
 	<h2>{{ cl.label }}</h2>
 	<h3>{{ ", ".join(cl.professor) }}</h2>
 	<div class="row-fluid">
-	    <div class="span9">
+	    <div class="span8">
 	    	<p>{{ cl.description }}</p>
 	    	
 	    	<div>
                         {% for s in cl.sessions %}
-                        <div style="float:left; text-align:center; padding: 3px">
+                        <div style="float:left; text-align:center; padding: 10px">
                                 {% if s['type']=='lecture'%}
                                 <h4>Lecture </h4>
                                 <p>{{ s['time']}}, {{s['place']}}</p>
@@ -39,7 +39,7 @@
             </div>
 	    </div>
 	   
-	    <div class="span3" style="position:relative; bottom:0px;">
+	    <div class="span4" style="position:relative;">
 	    	<p>
 	        {% if cl_is_taking %}
 	        <a class="btn btn-danger" href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
@@ -52,14 +52,14 @@
 	</div>
 	</br>
 	<div class="row-fluid" >
-    	<div class="span9" style="margin-left: -20px">
+    	<div class="span8" style="margin-left: -25px">
     		{% include "calendar-partial.html" %}
     	</div> 
     	
-    	<div class="span3" style="margin-left: 40px">
-    		    <h4>Friends enrolled</h4></br>
+    	<div class="span4" style="margin-left: 45px">
+    		    <h2>Friends enrolled</h2></br>
                 {% for f in friends %}
-                <div style="float:center; text-align:center; padding: 10px">
+                <div style="float:center; text-align:center; padding: 10px; margin-left:-90px">
                     <h4>{{ f.name }}</h4>
                 <img src="{{ f.pic_square }}">
                 </div>
