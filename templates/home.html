@@ -77,13 +77,17 @@ top: 80px;
 </form>
 
     	<div>
-    		    <h2>Friends using Regi</h2></br>
-                {% for f in friends %}
-                <div style="float:left; text-align:center; padding: 10px;">
-                    <h4>{{ f.name }}</h4>
-                <img src="{{ f.pic_square }}">
-                </div>
-                {% endfor %}
+            <h2>Friends using Regi</h2><br>
+            <h4>Click on them to see their schedule!</h4>
+            <br>
+                    {% for f in friends %}
+                    <a href="/user/{{f.uid}}">
+                        <div style="float:left; text-align:center; padding: 10px;">
+                            <h4>{{ f.name }}</h4>
+                            <img src="{{ f.pic_square }}">
+                        </div>
+                    </a>
+                    {% endfor %}
     	</div>
 
 <script>
