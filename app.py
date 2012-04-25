@@ -269,26 +269,40 @@ def calendar():
 def getClassesForFBID(fbid):
     return db.classes.Class.find({'userlist': unicode(fbid)})
 
+def timeToFloat(timeStr):
+    """8:30 or 3"""
+    if '.' in timeStr:
+        time = float(timeStr.split('.')[0]) + 0.5
+    else:
+        time = float(timeStr)
+    if time < 8:
+        time += 12
+    return time
+
 def makeClassSchedule(cl, color=0):
     schedule = []
     time = getTimeForClass(cl)
+    days = re.match('([MTWRF]+)', time).group(1)
     if '-' in time:
-        return []
+        print time
+        first  = re.match('[MTWRF]*([0-9.]+)-([0-9.]+)', time).group(1)
+        second = re.match('[MTWRF]*([0-9.]+)-([0-9.]+)', time).group(2)
+        ttime = timeToFloat(first)
+        endtime = timeToFloat(second)
+        length = endtime - ttime
     else:
-        days = re.match('([MTWRF]+)', time).group(1)
-        ttime = re.match('[MTWRF]*([0-9]+)', time).group(1)
-        ittime = int(ttime)
-        if ittime < 8:
-            ittime += 12
-        for c in days:
-            s = {
-                    'name': cl['name'],
-                    'day': c,
-                    'time': ittime,
-                    'length': 1.0,
-                    'color': color,
-                }
-            schedule.append(s)
+        first = re.match('[MTWRF]*([0-9]+)', time).group(1)
+        ttime = timeToFloat(first)
+        length = 1.0
+    for c in days:
+        s = {
+                'name': cl['name'],
+                'day': c,
+                'time': ttime,
+                'length': length,
+                'color': color,
+            }
+        schedule.append(s)
     return schedule
 
 @app.route('/user/<userid>')

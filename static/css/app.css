@@ -92,3 +92,8 @@ ul.time-label li {
 .color-10{
     background: #E0C4FF;
 }
+
+.ui-autocomplete {
+    display: block;
+    border: 1px solid #CCC;
+}
