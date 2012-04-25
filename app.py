@@ -232,7 +232,7 @@ def main():
         fb_id = user_profile['id']
         first_name = user_profile['first_name']
 
-        user = db.users.find_one({'fb_id': fb_id})
+        user = db.users.find_one({'fb_id': unicode(fb_id)})
         created = 'Updated existing'
         if user is None:
             created = 'Created new'
@@ -250,6 +250,7 @@ def main():
         friends = get_friends()
         userFBIDs = []
         for u in db.users.User.find():
+            print u
             userFBIDs.append(u['fb_id'])
         baguette_friends = []
         for f in friends:
