@@ -215,7 +215,7 @@ def main():
     classes = []
     if not BYPASS:
         if 'code' not in request.args:
-            #return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
+            return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
             pass
         code = request.args.get('code')#,
 #            'AQDOlT2Geph7__LHHi3VOyePP4kzTQ-i_VHbgA381AtDV5Np3tzkakHBOFiDokSwaRImkaB-n9qzo8T6f5Q6_lauY5ZSoRu_by997UL8QiLm6_Oof36ztB4lLa9bPfZuoyWr4vu-ixQEUOecVfXEs8uwNZRjc3fOyjP9MqF_bICuyUfUgzJKWnZ-Sdc-hwLC108#_=_')
