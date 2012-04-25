@@ -214,8 +214,10 @@ def main():
     classes = []
     if not BYPASS:
         if 'code' not in request.args:
-            return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
-        code = request.args.get('code', None)
+            #return redirect(OAUTH_URL % (FB_APP_ID, FB_DOMAIN))
+            pass
+        code = request.args.get('code',
+                'AQBmMrqmwf-WkYPEla6yioi4XC-sp0FEORS8Z8oLSr7BaZIVjmylMRwGOlOOK6qlyTBnr3NcqSUq-aqXKyLKGfZv21ZtgArpy6nmKSjnFvolEDbfEQNFa_ZYSlLyGIw-lpViMgZUoqpJfRHUrZoc67obNrd54VS_wQaxBopZIX3lcY8KDFnaYmnhM8u7iKhZnts#_=_')
         h = httplib2.Http()
         url = TOKEN_ENDPOINT % (FB_APP_ID, FB_DOMAIN, FB_APP_SECRET, code)
   
