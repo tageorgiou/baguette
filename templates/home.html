@@ -76,10 +76,10 @@ top: 80px;
 </div>
 </form>
 
-    	<div class="span4" style="margin-left: 45px">
-    		    <h2>Friends enrolled</h2></br>
+    	<div style="margin-left: 45px">
+    		    <h2>Friends using Regi</h2></br>
                 {% for f in friends %}
-                <div style="float:center; text-align:center; padding: 10px; margin-left:-90px">
+                <div style="float:left; text-align:center; padding: 10px; margin-left:-90px">
                     <h4>{{ f.name }}</h4>
                 <img src="{{ f.pic_square }}">
                 </div>
