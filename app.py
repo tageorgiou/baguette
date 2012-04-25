@@ -254,7 +254,7 @@ def main():
             userFBIDs.append(u['fb_id'])
         baguette_friends = []
         for f in friends:
-            if unicode(f['uid']) in baguette_friends:
+            if unicode(f['uid']) in userFBIDs:
                 baguette_friends.append(f)
     else:
         pass
