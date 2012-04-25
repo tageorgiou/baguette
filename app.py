@@ -248,11 +248,18 @@ def main():
         session['token'] = access_token
         session['first_name'] = first_name
         friends = get_friends()
+        userFBIDs = []
+        for u in db.users.User.find():
+            userFBIDs.append(u['fb_id'])
+        baguette_friends = []
+        for f in friends:
+            if unicode(f['uid']) in baguette_friends:
+                baguette_friends.append(f)
     else:
         pass
 
     return render_template('home.html', fbid=fb_id,
-            classes=find_registered_classes(fb_id), friends=friends,
+            classes=find_registered_classes(fb_id), friends=baguette_friends,
             first_name=first_name)
 #    return '%s user (fb_id: %s) with access_token %s' % (created, fb_id, access_token)
 #    return content

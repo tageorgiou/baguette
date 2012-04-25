@@ -76,6 +76,16 @@ top: 80px;
 </div>
 </form>
 
+    	<div class="span4" style="margin-left: 45px">
+    		    <h2>Friends enrolled</h2></br>
+                {% for f in friends %}
+                <div style="float:center; text-align:center; padding: 10px; margin-left:-90px">
+                    <h4>{{ f.name }}</h4>
+                <img src="{{ f.pic_square }}">
+                </div>
+                {% endfor %}
+    	</div>
+
 <script>
     $(function() {
         $("#searchbox").autocomplete({
