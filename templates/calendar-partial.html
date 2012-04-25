@@ -199,7 +199,8 @@ span class='data'>Data abstractions: elementary data structures (lists, stacks, 
     for (var i = 0; i < schedule.length; i++) {
         //alert(schedule[i]);
         $.tmpl("<div class='color-${color} schedule-block' style='top: ${top}px; \
-            height: ${height}px;'><span class='course-name'>${name}</span> \
+            height: ${height}px;'><a href='/class/${name}'> \
+                <span class='course-name'>${name}</span></a> \
             <span class='section-type label'>LEC</span> \
         </div>", 
         {"name": schedule[i].name,
