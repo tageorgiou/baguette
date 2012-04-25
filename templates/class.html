@@ -12,6 +12,7 @@
     body {
         background-image: url(static/img/brushed_alu.png);
     }
+    
 </style>
 {% block body %}
 <div style="margin-top:-21px;padding:20px;padding-bottom:120px; float:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F";>
@@ -20,30 +21,12 @@
 	<h2>{{ cl.label }}</h2>
 	<h3>{{ ", ".join(cl.professor) }}</h2>
 	<div class="row-fluid">
-	    <div class="span4">
-	    <p>{{ cl.description }}</p>
-	    <br />
-	    <p>
-	        {% if cl_is_taking %}
-	        <a class="btn btn-danger" href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
-	        {% else %}
-	        <a class="btn btn-primary" href="/class/{{ cl.name }}/take">Take this class</a>
-	        {% endif %}
-	        </p>
-            <div>
-                    Friends enrolled
-                {% for f in friends %}
-                <div style="float:left; text-align:center; padding: 10px">
-                    <h4>{{ f.name }}</h4>
-                <img src="{{ f.pic_square }}">
-                </div>
-                {% endfor %}
-            </div>
-	    </div>
 	    <div class="span8">
-                <div>
+	    	<p>{{ cl.description }}</p>
+	    	
+	    	<div>
                         {% for s in cl.sessions %}
-                        <div style="float:left; text-align:center; padding: 10px">
+                        <div style="float:left; text-align:center;">
                                 {% if s['type']=='lecture'%}
                                 <h4>Lecture </h4>
                                 <p>{{ s['time']}}, {{s['place']}}</p>
@@ -53,12 +36,37 @@
                                 {% endif %}
                         </div>
                         {% endfor %}
-                </div>
-                {% include "calendar-partial.html" %}
+            </div>
 	    </div>
+	   
+	    <div class="span 3">
+	    	<p>
+	        {% if cl_is_taking %}
+	        <a class="btn btn-danger" href="/class/{{ cl.name }}/untake">I'm not taking this class</a>
+	        {% else %}
+	        <a class="btn btn-primary" href="/class/{{ cl.name }}/take">Take this class</a>
+	        {% endif %}
+	        </p>
+	    </div>
+	        	
 	</div>
-	
-	
+	</br>
+	<div class="row-fluid" >
+    	<div class="span8" style="margin-left: -20px">
+    		{% include "calendar-partial.html" %}
+    	</div> 
+    	
+    	<div class="span3" style="margin-left: 40px">
+    		    <h4>Friends enrolled</h4></br>
+                {% for f in friends %}
+                <div style="float:left; text-align:center; padding: 10px">
+                    <h4>{{ f.name }}</h4>
+                <img src="{{ f.pic_square }}">
+                </div>
+                {% endfor %}
+    	</div>
+	    
+	</div>
 	
 </div>
 {% endblock %}
