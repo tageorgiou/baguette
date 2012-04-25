@@ -330,7 +330,7 @@ def show_user(userid):
     #for f in friendList:
     #    if unicode(f['uid']) in classTakers:
     #        friendClassTakers.append(f)
-    classes = getClassesForFBID('552102999')
+    classes = getClassesForFBID(userid)
     schedule = []
     colorcounter = 0
     for cl in classes:
