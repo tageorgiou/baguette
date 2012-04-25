@@ -18,7 +18,8 @@
 <div class="row-fluid" style="padding: 20px; ">
 	
     <div class="span8" style="text-align: center; margin-left:-30px;">
-        <h3>{{user_profile.name}}</h3>
+        <h3>{{user_profile.name}}</h3><img
+        src="https://graph.facebook.com/{{user_profile.id}}/picture">
     	<div style="padding-top: 10px">
 			{% include "calendar-partial.html" %}
 
