@@ -60,8 +60,9 @@
     		    <h2>Friends enrolled</h2></br>
                 {% for f in friends %}
                 <div style="float:center; text-align:center; padding: 10px; margin-left:-90px">
+                    <a href="/user/{{f.uid}}">
                     <h4>{{ f.name }}</h4>
-                <img src="{{ f.pic_square }}">
+                <img src="{{ f.pic_square }}"></a>
                 </div>
                 {% endfor %}
     	</div>

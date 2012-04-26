@@ -19,8 +19,9 @@
 	
     <div class="span8" style="text-align: center; margin-left:-30px;">
         <h3>
-            <img src="https://graph.facebook.com/{{user_profile.id}}/picture">
+            
             {{user_profile.name}}
+
         </h3>
     	<div style="padding-top: 10px">
 			{% include "calendar-partial.html" %}
@@ -29,7 +30,7 @@
     </div>
     <div class="span4" style="padding-top: 40px;">
     	<div style="float:center;">
-    		<img src="/static/img/1RegiIcon.png"/>
+    		<img src="https://graph.facebook.com/{{user_profile.id}}/picture">
     		<img src="/static/img/1RegiIcon.png">
     	</div>
     	<h5>You are both enrolled in:</h5>

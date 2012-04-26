@@ -49,7 +49,7 @@ top: 80px;
 } 
 </style> 
 
-<div style="float:center; text-align:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F">
+<div style="margin-top:-21px;float:center; text-align:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F">
 	
 <a href="/" onMouseOver="ShowPicture('Style',1)" onMouseOut="ShowPicture('Style',0)"><img src="static/img/WebLogo.png" alt="regi logo"/></a>
 <div id="Style"><img src="static/img/Blurb.png" style="width:250px"></div> 
@@ -76,7 +76,8 @@ top: 80px;
 </div>
 </form>
 
-    	<div>
+    	<div style="position: relative; height:500px">
+    		<div style="position: absolute; text-align: center;">
             <h2>Friends using Regi</h2><br>
             <h4>Click on them to see their schedule!</h4>
             <br>
@@ -88,6 +89,7 @@ top: 80px;
                         </div>
                     </a>
                     {% endfor %}
+    		</div>
     	</div>
 
 <script>
