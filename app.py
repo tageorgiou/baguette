@@ -402,8 +402,8 @@ def getTimeForClass(cl):
 @app.route('/fixclasses')
 def fixClasses():
     for cl in db.classes.Class.find():
-        #cl['usersessions'] = {}
-        #cl.save()
+        cl['usersessions'] = {}
+        cl.save()
         userlist = cl['userlist']
         for u in userlist:
             print u
