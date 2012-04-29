@@ -95,6 +95,8 @@ def takeClass(cl, fbid):
     cl['userlist'].append(fbid)
 
     #prepopulate initial session choices
+    if fbid not in cl['usersessions']:
+        cl['usersessions'][fbid] = []
     firstLecture = findFirstSessionType(cl, 'lecture')
     if firstLecture is not None:
         cl['usersessions'][fbid].append(firstLecture)
