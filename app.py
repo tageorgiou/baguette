@@ -405,7 +405,8 @@ def getTimeForClass(cl):
 
 @app.route('/fixclasses')
 def fixClasses():
-    for cl in db.classes.Class.find():
+    for cl in db.classes.Class.find({'userlist' : '{$ne:[]}'}):
+        print cl['name']
         cl['usersessions'] = {}
         cl.save()
         userlist = cl['userlist']
@@ -413,6 +414,7 @@ def fixClasses():
             print u
             untakeClass(cl, u)
             takeClass(cl, u)
+    return ""
 
 if __name__ == '__main__':
     app.debug = True
