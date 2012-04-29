@@ -29,6 +29,7 @@ app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
 
 def getUserProfile(fbid):
+    """Return an fbid's user profile"""
     user_profile = cache.get('user_profile_' + str(fbid))
     if user_profile is not None:
         return user_profile
@@ -44,6 +45,27 @@ def getUserProfile(fbid):
     else:
         raise Exception("Error getting user profile")
 
+@app.route('/class/<classname>')
+def show_class(classname):
+    cl = db.classes.find_one({'name': classname})
+    if 'fb_id' in session:
+        fbid = session['fb_id']
+    if cl == None:
+        return "404", 404 #Better 404 page
+    cl_is_taking = fbid in cl['users'] #Am I taking the class?
+    if BYPASS:
+        friendList = []
+    else:
+        friendList = get_friends()
+    classTakers = cl['userlist']
+    friendClassTakers = []
+    for f in friendList:
+        if unicode(f['uid']) in classTakers:
+            friendClassTakers.append(f)
+    schedule = makeClassSchedule(cl)
+    return render_template('class.html', cl=cl, fbid=fbid,
+            cl_is_taking=cl_is_taking, friends=friendClassTakers,
+            schedule=schedule)
 
 def takeClass(cl, fbid):
     """ Given a class and fbid for user, take the class"""
@@ -69,33 +91,6 @@ def takeClass(cl, fbid):
         db.classes.save(cl)
     return ""
 
-@app.route('/class/<classname>')
-def show_class(classname):
-    fbid = "nope"
-    dbg = 'eee'
-    cl = db.classes.find_one({'name': classname})
-    if 'fb_id' in session:
-        fbid = session['fb_id']
-        #dbg = str(takeClass(cl))
-    if cl == None:
-        return "404", 404
-    cl_is_taking = fbid in cl['users']
-    if BYPASS:
-        friendList = []
-    else:
-        friendList = get_friends()
-    classTakers = cl['userlist']
-    print classTakers
-    friendClassTakers = []
-    #print friendList[0]['uid']
-    for f in friendList:
-        if unicode(f['uid']) in classTakers:
-            friendClassTakers.append(f)
-    schedule = makeClassSchedule(cl)
-    return render_template('class.html', cl=cl, fbid=fbid, dbg=dbg,
-            cl_is_taking=cl_is_taking, friends=friendClassTakers,
-            schedule=schedule)
-
 @app.route('/class/<classname>/take')
 def take_class(classname):
     cl = db.classes.find_one({'name': classname})
@@ -107,6 +102,7 @@ def take_class(classname):
         return "not logged in"
     fbid = session['fb_id']
     dbg = takeClass(cl, fbid)
+    #TODO: flash this?
 #    return 'yay. you are now taking %s %s' % (classname, dbg)
     return redirect('/class/%s' % classname)
 
@@ -135,7 +131,6 @@ def untakeClass(cl, fbid):
                 del cl['users'][fbid]
                 cl['userlist'].remove(fbid)
                 db.classes.save(cl)
-    #return str(resp) + "---" + str(content)
     return ""
 
 @app.route('/class/<classname>/untake')
@@ -153,6 +148,7 @@ def untake_class(classname):
     return redirect('/class/%s' % classname)
 
 def find_registered_classes(fbid):
+    """What classes am I in?"""
     classes = []
     clcc = db.classes.find({ 'userlist': unicode(fbid) })
     for i in range(0,clcc.count()):
@@ -160,6 +156,7 @@ def find_registered_classes(fbid):
     return classes
 
 def get_friends():
+    """Return my friends list"""
     if 'fb_id' not in session:
         raise Exception()
     if 'token' not in session:
@@ -187,6 +184,7 @@ def get_friends():
 
 @app.route('/search')
 def search():
+    """Redirect to a class web page"""
     if 'q' not in request.args:
         return "No query specified"
     query = request.args['q']
@@ -194,6 +192,7 @@ def search():
 
 @app.route('/autocomplete')
 def autocomplete():
+    """Autocomplete search box backend"""
     if 'term' not in request.args:
         return "No query specified"
     query = re.escape(request.args['term'])
@@ -214,12 +213,12 @@ def autocomplete():
     return json.dumps(results)
 
 
-def get_user_profile(access_token):
+def getMyProfile(access_token):
+    """Return my profile"""
     h = httplib2.Http()
     resp, content = h.request(ME_URL % access_token)
-    user_profile = json.loads(content)
-    print user_profile
-    return user_profile
+    my_profile = json.loads(content)
+    return my_profile
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
@@ -242,9 +241,9 @@ def main():
         param = urlparse.parse_qs(content)
         access_token, expires = [x[0] for x in param.values()]
 
-        user_profile = get_user_profile(access_token)
-        fb_id = user_profile['id']
-        first_name = user_profile['first_name']
+        my_profile = getMyProfile(access_token)
+        fb_id = my_profile['id']
+        first_name = my_profile['first_name']
 
         user = db.users.find_one({'fb_id': unicode(fb_id)})
         created = 'Updated existing'
@@ -349,12 +348,10 @@ def show_user(userid):
     schedule = []
     colorcounter = 0
     for cl in classes:
-        print getTimeForClass(cl)
         schedule += makeClassSchedule(cl, color=colorcounter)
         colorcounter += 1
-    print schedule
     return render_template('user.html', classes=classes, fbid=fbid,
-            schedule=schedule, user_profile=user_profile)
+            schedule=schedule)
 
 def getTimeForClass(cl):
     for s in cl['sessions']:

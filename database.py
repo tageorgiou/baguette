@@ -16,6 +16,7 @@ class Class(Document):
         #'lecture' : list,
         #'recitation' : list,
         'users': dict, #fbid : action fbid
+        'usersessions': dict, #fbid : [sessionNameList]
         'userlist': list,
         'sessions': list, # type, time, place
     }
