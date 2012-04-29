@@ -398,6 +398,16 @@ def getTimeForClass(cl):
         if s['type'] == u'lecture':
             return s['time']
 
+
+@app.route('/fixclasses')
+def fixClasses():
+    for cl in db.classes.find():
+        userlist = cl['userlist']
+        for u in userlist:
+            print u
+            untakeClass(cl, u)
+            takeClass(cl, u)
+
 if __name__ == '__main__':
     app.debug = True
     port = int(os.environ.get('PORT', 5005))
