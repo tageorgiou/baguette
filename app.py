@@ -70,7 +70,7 @@ def show_class(classname):
             schedule=schedule, mySessions=mySessions)
 
 def findFirstSessionType(cl, stype):
-    for s in cl['session']:
+    for s in cl['sessions']:
         if s['type'] == stype:
             return s
 
