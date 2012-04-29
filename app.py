@@ -136,7 +136,8 @@ def untakeClass(cl, fbid):
         if fbid in cl['users']:
             del cl['users'][fbid]
             cl['userlist'].remove(fbid)
-            cl['usersessions'].remove(fbid)
+            if fbid in cl['usersessions']:
+                del cl['usersessions'][fbid]
             db.classes.save(cl)
         return "Not taking"
     else:
@@ -148,7 +149,8 @@ def untakeClass(cl, fbid):
             if fbid in cl['users']:
                 del cl['users'][fbid]
                 cl['userlist'].remove(fbid)
-                cl['usersessions'].remove(fbid)
+                if fbid in cl['usersessions']:
+                    del cl['usersessions'][fbid]
                 db.classes.save(cl)
     return ""
 
