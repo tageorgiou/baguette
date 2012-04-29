@@ -28,6 +28,7 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
 
+
 def getUserProfile(fbid):
     """Return an fbid's user profile"""
     user_profile = cache.get('user_profile_' + str(fbid))
@@ -63,9 +64,15 @@ def show_class(classname):
         if unicode(f['uid']) in classTakers:
             friendClassTakers.append(f)
     schedule = makeClassSchedule(cl)
+    mySessions = cl['usersessions'][fbid]
     return render_template('class.html', cl=cl, fbid=fbid,
             cl_is_taking=cl_is_taking, friends=friendClassTakers,
-            schedule=schedule)
+            schedule=schedule, mySessions=mySessions)
+
+def findFirstSessionType(cl, stype):
+    for s in cl['session']:
+        if s['type'] == stype:
+            return s
 
 def takeClass(cl, fbid):
     """ Given a class and fbid for user, take the class"""
@@ -83,12 +90,22 @@ def takeClass(cl, fbid):
     was_successful = (resp['status'] == '200')
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
-        cl['userlist'].append(fbid)
-        db.classes.save(cl)
     else: 
         cl['users'][fbid] = NOACTION_CLASS_TAKE
-        cl['userlist'].append(fbid)
-        db.classes.save(cl)
+    cl['userlist'].append(fbid)
+
+    #prepopulate initial session choices
+    firstLecture = findFirstSessionType(cl, 'lecture')
+    if firstLecture is not None:
+        cl['usersessions'][fbid].append(firstLecture)
+    firstLab = findFirstSessionType(cl, 'lab')
+    if firstLab is not None:
+        cl['usersessions'][fbid].append(firstLab)
+    firstRecitation = findFirstSessionType(cl, 'recitation')
+    if firstRecitation is not None:
+        cl['usersessions'][fbid].append(firstRecitation)
+
+    db.classes.save(cl)
     return ""
 
 @app.route('/class/<classname>/take')
@@ -119,6 +136,7 @@ def untakeClass(cl, fbid):
         if fbid in cl['users']:
             del cl['users'][fbid]
             cl['userlist'].remove(fbid)
+            cl['usersessions'].remove(fbid)
             db.classes.save(cl)
         return "Not taking"
     else:
@@ -130,6 +148,7 @@ def untakeClass(cl, fbid):
             if fbid in cl['users']:
                 del cl['users'][fbid]
                 cl['userlist'].remove(fbid)
+            cl['usersessions'].remove(fbid)
                 db.classes.save(cl)
     return ""
 
@@ -145,6 +164,22 @@ def untake_class(classname):
     fbid = session['fb_id']
     dbg = untakeClass(cl, fbid)
     #return 'yay. you are now not taking %s %s' % (classname, dbg)
+    return redirect('/class/%s' % classname)
+
+@app.route('/class/<classname>/<sessionname>/take')
+def take_session(classname, sessionname):
+    cl = db.classes.find_one({'name': classname})
+    fbid = session['fb_id']
+    cl['usersessions'][fbid].remove(sessionname)
+    cl.save()
+    return redirect('/class/%s' % classname)
+
+@app.route('/class/<classname>/<sessionname>/untake')
+def untake_session(classname, sessionname):
+    cl = db.classes.find_one({'name': classname})
+    fbid = session['fb_id']
+    cl['usersessions'][fbid].remove(sessionname)
+    cl.save()
     return redirect('/class/%s' % classname)
 
 def find_registered_classes(fbid):
@@ -352,6 +387,11 @@ def show_user(userid):
         colorcounter += 1
     return render_template('user.html', classes=classes, fbid=fbid,
             schedule=schedule)
+
+def getTimeForSessionClass(sessionName, cl):
+    for s in cl['sessions']:
+        if s['name'] == sessionName:
+            return s['time']
 
 def getTimeForClass(cl):
     for s in cl['sessions']:
