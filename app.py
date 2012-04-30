@@ -64,7 +64,10 @@ def show_class(classname):
         if unicode(f['uid']) in classTakers:
             friendClassTakers.append(f)
     schedule = makeClassSchedule(cl)
-    mySessions = cl['usersessions'][fbid] or []
+    if fbid in cl['usersessions']:
+        mySessions = cl['usersessions'][fbid]
+    else:
+        mySessions = []
     return render_template('class.html', cl=cl, fbid=fbid,
             cl_is_taking=cl_is_taking, friends=friendClassTakers,
             schedule=schedule, mySessions=mySessions)
