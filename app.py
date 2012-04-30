@@ -103,13 +103,13 @@ def takeClass(cl, fbid):
     firstLecture = findFirstSessionType(cl, 'lecture')
     if firstLecture is not None:
         print firstLecture
-        cl['usersessions'][fbid].append(firstLecture[u'name'])
+        cl['usersessions'][fbid].append(firstLecture['label'])
     firstLab = findFirstSessionType(cl, 'lab')
     if firstLab is not None:
-        cl['usersessions'][fbid].append(firstLab[u'name'])
+        cl['usersessions'][fbid].append(firstLab['label'])
     firstRecitation = findFirstSessionType(cl, 'recitation')
     if firstRecitation is not None:
-        cl['usersessions'][fbid].append(firstRecitation[u'name'])
+        cl['usersessions'][fbid].append(firstRecitation['label'])
 
     db.classes.save(cl)
     return ""
