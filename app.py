@@ -74,7 +74,7 @@ def show_class(classname):
 
 def findFirstSessionType(cl, stype):
     for s in cl['sessions']:
-        if s['type'] == stype:
+        if s['type'] == unicode(stype):
             return s
 
 def takeClass(cl, fbid):
