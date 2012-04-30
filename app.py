@@ -102,6 +102,7 @@ def takeClass(cl, fbid):
         cl['usersessions'][fbid] = []
     firstLecture = findFirstSessionType(cl, 'lecture')
     if firstLecture is not None:
+        print firstLecture
         cl['usersessions'][fbid].append(firstLecture[u'name'])
     firstLab = findFirstSessionType(cl, 'lab')
     if firstLab is not None:
