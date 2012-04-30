@@ -33,7 +33,7 @@
 
                                 <!--Display button or not?-->
                                 {% if cl_is_taking %}
-                                    {{mySessions | json}}
+                                    {{mySessions | safe}}
                                     {% if s['name'] in mySessions %}
                                     <!-- taking this now -->
                                     <a class="btn"
