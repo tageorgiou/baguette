@@ -48,7 +48,7 @@ def getUserProfile(fbid):
 
 @app.route('/class/<classname>')
 def show_class(classname):
-    cl = db.classes.find_one({'name': classname})
+    cl = db.classes.Class.find_one({'name': classname})
     if 'fb_id' in session:
         fbid = session['fb_id']
     if cl == None:
@@ -122,7 +122,7 @@ def takeClass(cl, fbid):
 
 @app.route('/class/<classname>/take')
 def take_class(classname):
-    cl = db.classes.find_one({'name': classname})
+    cl = db.classes.Class.find_one({'name': classname})
     if cl == None:
         return "404", 404
     if 'fb_id' not in session:
@@ -171,7 +171,7 @@ def untakeClass(cl, fbid):
 
 @app.route('/class/<classname>/untake')
 def untake_class(classname):
-    cl = db.classes.find_one({'name': classname})
+    cl = db.classes.Class.find_one({'name': classname})
     if cl == None:
         return "404", 404
     if 'fb_id' not in session:
@@ -185,7 +185,7 @@ def untake_class(classname):
 
 @app.route('/class/<classname>/<sessionname>/take')
 def take_session(classname, sessionname):
-    cl = db.classes.find_one({'name': classname})
+    cl = db.classes.Class.find_one({'name': classname})
     fbid = session['fb_id']
     cl['usersessions'][fbid].remove(sessionname)
     cl.save()
@@ -193,7 +193,7 @@ def take_session(classname, sessionname):
 
 @app.route('/class/<classname>/<sessionname>/untake')
 def untake_session(classname, sessionname):
-    cl = db.classes.find_one({'name': classname})
+    cl = db.classes.Class.find_one({'name': classname})
     fbid = session['fb_id']
     cl['usersessions'][fbid].remove(sessionname)
     cl.save()
@@ -202,7 +202,7 @@ def untake_session(classname, sessionname):
 def find_registered_classes(fbid):
     """What classes am I in?"""
     classes = []
-    clcc = db.classes.find({ 'userlist': unicode(fbid) })
+    clcc = db.classes.Class.find({ 'userlist': unicode(fbid) })
     for i in range(0,clcc.count()):
         classes.append(clcc.next())
     return classes
