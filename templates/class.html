@@ -27,24 +27,22 @@
 	    	<div>
                         {% for s in cl.sessions %}
                         <div style="float:left; text-align:center; padding: 10px">
-                            {{s | safe}}
                                 {% if s['type']=='lecture'%}
                                 <h4>Lecture </h4>
                                 <p>{{ s['time']}}, {{s['place']}}</p>
 
                                 <!--Display button or not?-->
                                 {% if cl_is_taking %}
-                                    {{mySessions | safe}}
-                                    {% if s['name'] in mySessions %}
+                                    {% if s['label'] in mySessions %}
                                     <!-- taking this now -->
                                     <a class="btn"
-                                        href="/class/{{cl.name}}/{{s['name']}}/untake">
+                                        href="/class/{{cl.name}}/{{s['label']}}/untake">
                                         Leave
                                     </a>
                                     {% else %}
                                     <!-- not taking this now -->
                                     <a class="btn"
-                                        href="/class/{{cl.name}}/{{s['name']}}/take">
+                                        href="/class/{{cl.name}}/{{s['label']}}/take">
                                         Attend
                                     </a>
                                     {% endif %}
