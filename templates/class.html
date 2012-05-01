@@ -51,6 +51,22 @@
                                 {% else %}
                                 <h4>Recitation</h4>
                                 <p>{{ s['time']}}, {{s['place']}}</p>
+                                <!--Display button or not?-->
+                                {% if cl_is_taking %}
+                                    {% if s['label'] in mySessions %}
+                                    <!-- taking this now -->
+                                    <a class="btn"
+                                        href="/class/{{cl.name}}/{{s['label']}}/untake">
+                                        Leave
+                                    </a>
+                                    {% else %}
+                                    <!-- not taking this now -->
+                                    <a class="btn"
+                                        href="/class/{{cl.name}}/{{s['label']}}/take">
+                                        Attend
+                                    </a>
+                                    {% endif %}
+                                {% endif %}
                                 {% endif %}
                         </div>
                         {% endfor %}
