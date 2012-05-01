@@ -187,7 +187,7 @@ def untake_class(classname):
 def take_session(classname, sessionname):
     cl = db.classes.Class.find_one({'name': classname})
     fbid = session['fb_id']
-    cl['usersessions'][fbid].remove(sessionname)
+    cl['usersessions'][fbid].append(sessionname)
     cl.save()
     return redirect('/class/%s' % classname)
 
