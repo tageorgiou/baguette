@@ -27,6 +27,7 @@
 	    	<div>
                         {% for s in cl.sessions %}
                         <div style="float:left; text-align:center; padding: 10px">
+                            {{s || safe}}
                                 {% if s['type']=='lecture'%}
                                 <h4>Lecture </h4>
                                 <p>{{ s['time']}}, {{s['place']}}</p>

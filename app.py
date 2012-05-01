@@ -80,17 +80,23 @@ def findFirstSessionType(cl, stype):
 def takeClass(cl, fbid):
     """ Given a class and fbid for user, take the class"""
     url = 'https://graph.facebook.com/me/mitcourses:take?'
-    if 'token' not in session:
-        raise Exception
-    accesstoken = session['token']
+    if BYPASS:
+        accesstoken = ""
+    else:
+        if 'token' not in session:
+            raise Exception
+        accesstoken = session['token']
     classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
         'professor' : cl['professor']})
     url = url + classurl
     h = httplib2.Http()
-    resp, content = h.request(url, "POST", '')
-    content = json.loads(content)
-    was_successful = (resp['status'] == '200')
+    if BYPASS:
+        was_successful = False
+    else:
+        resp, content = h.request(url, "POST", '')
+        content = json.loads(content)
+        was_successful = (resp['status'] == '200')
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
     else: 
@@ -131,9 +137,12 @@ def take_class(classname):
 
 def untakeClass(cl, fbid):
     url = 'https://graph.facebook.com/%s?'
-    if 'token' not in session:
-        raise Exception
-    accesstoken = session['token']
+    if BYPASS:
+        accesstoken = ""
+    else:
+        if 'token' not in session:
+            raise Exception
+        accesstoken = session['token']
     classurl = urlencode({'access_token' : accesstoken})
     if fbid not in cl['users']:
         return "Um, you aren't taking this class"
@@ -409,12 +418,12 @@ def getTimeForClass(cl):
 
 @app.route('/fixclasses')
 def fixClasses():
-    for cl in db.classes.Class.find({'userlist' : '{$ne:[]}'}):
-        print cl['name']
+    for cl in db.classes.Class.find():
         cl['usersessions'] = {}
         cl.save()
         userlist = cl['userlist']
         for u in userlist:
+            print cl['name']
             print u
             untakeClass(cl, u)
             takeClass(cl, u)
