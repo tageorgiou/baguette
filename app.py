@@ -394,7 +394,7 @@ def show_user(userid):
         schedule += makeClassSchedule(cl, color=colorcounter)
         colorcounter += 1
     return render_template('user.html', classes=classes, fbid=fbid,
-            schedule=schedule)
+            schedule=schedule, user_profile=user_profile)
 
 def getTimeForSessionClass(sessionName, cl):
     for s in cl['sessions']:
