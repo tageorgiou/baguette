@@ -195,8 +195,48 @@ span class='data'>Data abstractions: elementary data structures (lists, stacks, 
     displayClass({'hi': 5});
 </script>
 <script>
-    var schedule = {{schedule | tojson | safe}};
+
+var pad = function(num, totalChars) {
+    var pad = '0';
+    num = num + '';
+    while (num.length < totalChars) {
+        num = pad + num;
+    }
+    return num;
+};
+
+// Ratio is between 0 and 1
+var changeColor = function(color, ratio, darker) {
+    var difference = Math.round(ratio * 255) * (darker ? -1 : 1),
+        minmax     = darker ? Math.max : Math.min,
+        decimal    = color.replace(
+            /^#?([a-z0-9][a-z0-9])([a-z0-9][a-z0-9])([a-z0-9][a-z0-9])/i,
+            function() {
+                return parseInt(arguments[1], 16) + ',' +
+                    parseInt(arguments[2], 16) + ',' +
+                    parseInt(arguments[3], 16);
+            }
+        ).split(/,/);
+    return [
+        '#',
+        pad(minmax(parseInt(decimal[0], 10) + difference, 0).toString(16), 2),
+        pad(minmax(parseInt(decimal[1], 10) + difference, 0).toString(16), 2),
+        pad(minmax(parseInt(decimal[2], 10) + difference, 0).toString(16), 2)
+    ].join('');
+};
+var lighterColor = function(color, ratio) {
+    return changeColor(color, ratio, false);
+};
+var darkerColor = function(color, ratio) {
+        return changeColor(color, ratio, true);
+};
+
+function displaySchedule(schedule) {
     for (var i = 0; i < schedule.length; i++) {
+        var color = schedule[i].color;
+        if (schedule[i].type == "REC") {
+            color = color + "-rec";
+        }
         //alert(schedule[i]);
         $.tmpl("<div class='color-${color} schedule-block' style='top: ${top}px; \
             height: ${height}px;'><a href='/class/${name}'> \
@@ -206,8 +246,12 @@ span class='data'>Data abstractions: elementary data structures (lists, stacks, 
         {"name": schedule[i].name,
          "top": (schedule[i].time-8)*47+31,
          "height": schedule[i].length * 46,
-         "color": schedule[i].color,
+         "color": color,
          "stype": schedule[i].type
-    }).appendTo("[day='" + schedule[i].day + "']");
+        }).appendTo("[day='" + schedule[i].day + "']");
     }
+}
+
+var schedule = {{schedule | tojson | safe}};
+displaySchedule(schedule);
 </script>

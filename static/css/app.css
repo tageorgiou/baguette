@@ -93,6 +93,40 @@ ul.time-label li {
     background: #E0C4FF;
 }
 
+.color-0-rec{
+    background: #b3dcef;
+}
+.color-1-rec{
+    background: #dAeFc9;
+}
+.color-2-rec{
+    background: #FFDDFF;
+}
+.color-3-rec{
+    background: #FFDEAF;
+}
+.color-4-rec{
+    background: #FFEEC9;
+}
+.color-5{
+    background: #E0C4FF;
+}
+.color-6{
+    background: #A8EDD8;
+}
+.color-7{
+    background: #E0C4FF;
+}
+.color-8{
+    background: #E0C4FF;
+}
+.color-9{
+    background: #E0C4FF;
+}
+.color-10{
+    background: #E0C4FF;
+}
+
 .ui-autocomplete {
     display: block;
     border: 1px solid #CCC;
