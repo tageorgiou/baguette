@@ -391,6 +391,9 @@ def makeMyClassSchedule(cl, fbid, color=0):
         return schedule
     for session in cl['usersessions'][fbid]:
         time = getTimeForSessionClass(session, cl)
+        print session, time
+        if time is None:
+            continue
         days = re.match('([MTWRF]+)', time).group(1)
         if '-' in time:
             print time
