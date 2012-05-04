@@ -360,7 +360,10 @@ def timeToFloat(timeStr):
 def makeClassSchedule(cl, color=0):
     schedule = []
     time = getTimeForClass(cl)
-    days = re.match('([MTWRF]+)', time).group(1)
+    try:
+        days = re.match('([MTWRF]+)', time).group(1)
+    except Exception:
+        return []
     if '-' in time:
         print time
         first  = re.match('[MTWRF]*([0-9.]+)-([0-9.]+)', time).group(1)
