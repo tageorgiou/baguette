@@ -258,7 +258,7 @@ def autocomplete():
         {'name': {'$regex': '^' + query, '$options': 'i'}},
         ]}
 
-    for c in db.classes.Class.find(mongoquery).limit(8):
+    for c in db.classes.Class.find(mongoquery).sort({'name': 1}).limit(8):
         val = {'label': c['name'] + ' ' + c['label'],
                 'value': c['name'],
                 'title': 'tttt',
