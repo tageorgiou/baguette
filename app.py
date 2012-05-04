@@ -379,8 +379,47 @@ def makeClassSchedule(cl, color=0):
                 'time': ttime,
                 'length': length,
                 'color': color,
+                'type': 'LEC',
             }
         schedule.append(s)
+    return schedule
+
+def makeMyClassSchedule(cl, fbid, color=0):
+    schedule = []
+    time = getTimeForClass(cl)
+    if fbid not in cl['usersessions']:
+        return schedule
+    for session in cl['usersessions'][fbid]:
+        time = getTimeForSessionClass(session, cl)
+        days = re.match('([MTWRF]+)', time).group(1)
+        if '-' in time:
+            print time
+            first  = re.match('[MTWRF]*([0-9.]+)-([0-9.]+)', time).group(1)
+            second = re.match('[MTWRF]*([0-9.]+)-([0-9.]+)', time).group(2)
+            ttime = timeToFloat(first)
+            endtime = timeToFloat(second)
+            length = endtime - ttime
+        else:
+            first = re.match('[MTWRF]*([0-9]+)', time).group(1)
+            ttime = timeToFloat(first)
+            length = 1.0
+        ts = session[0]
+        if ts == 'L':
+            stype = 'LEC'
+        elif ts == 'R':
+            stype = 'REC'
+        else:
+            stype = 'LAB'
+        for c in days:
+            s = {
+                    'name': cl['name'],
+                    'day': c,
+                    'time': ttime,
+                    'length': length,
+                    'color': color,
+                    'type': stype,
+                }
+            schedule.append(s)
     return schedule
 
 @app.route('/user/<userid>')
@@ -403,7 +442,7 @@ def show_user(userid):
     schedule = []
     colorcounter = 0
     for cl in classes:
-        schedule += makeClassSchedule(cl, color=colorcounter)
+        schedule += makeMyClassSchedule(cl, fbid, color=colorcounter)
         colorcounter += 1
     return render_template('user.html', classes=classes, fbid=fbid,
             schedule=schedule, user_profile=user_profile)

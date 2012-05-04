@@ -201,11 +201,13 @@ span class='data'>Data abstractions: elementary data structures (lists, stacks, 
         $.tmpl("<div class='color-${color} schedule-block' style='top: ${top}px; \
             height: ${height}px;'><a href='/class/${name}'> \
                 <span class='course-name'>${name}</span></a> \
-            <span class='section-type label'>LEC</span> \
+            <span class='section-type label'>${stype}</span> \
         </div>", 
         {"name": schedule[i].name,
          "top": (schedule[i].time-8)*47+31,
          "height": schedule[i].length * 46,
-        "color": schedule[i].color}).appendTo("[day='" + schedule[i].day + "']");
+         "color": schedule[i].color,
+         "stype": schedule[i].type
+    }).appendTo("[day='" + schedule[i].day + "']");
     }
 </script>
