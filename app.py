@@ -449,7 +449,7 @@ def show_user(userid):
 
 def getTimeForSessionClass(sessionName, cl):
     for s in cl['sessions']:
-        if s['name'] == sessionName:
+        if s['label'] == sessionName:
             return s['time']
 
 def getTimeForClass(cl):
