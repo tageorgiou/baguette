@@ -35,7 +35,7 @@ ul.schedule-day {
     border-bottom: 1px solid #AAA;
     position: relative;
 }
-ul.schedule-day .F {
+ul.schedule-day.F {
     border-right: 2px solid #CCC;
 }
 ul.time-label {
