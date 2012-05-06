@@ -451,7 +451,7 @@ def show_user(userid):
     schedule = []
     colorcounter = 0
     for cl in classes:
-        schedule += makeMyClassSchedule(cl, fbid, color=colorcounter)
+        schedule += makeMyClassSchedule(cl, userid, color=colorcounter)
         print schedule
         colorcounter += 1
     return render_template('user.html', classes=classes, fbid=fbid,
