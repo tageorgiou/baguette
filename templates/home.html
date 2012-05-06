@@ -87,7 +87,7 @@ top: 80px;
             delay: 100,
             selectFirst: true,
             html: true,
-            select: function(event, ui) {alert('hi');}
+            select: function(event, ui) {window.location = '/class/' + ui.item.value;}
         });
         });
 </script>
