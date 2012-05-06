@@ -40,9 +40,9 @@ top: 80px;
 <h3>Regi is a social class scheduler for <a
         href="http://mit.edu">MIT</a>, Fall 2012</h3>
 {% if (classes|length) == 0 %}
-    <h3>You are not currently signed up for any classes</h3>
+    <h4>You are not currently signed up for any classes</h4>
 {% else %}
-    <h3>You are currently registered for:</h3>
+    <h4>You are currently registered for:</h4>
     {% for c in classes %}
     <a href="/class/{{c.name}}">{{c.name}}</a></br>
     {% endfor %}
@@ -66,7 +66,7 @@ top: 80px;
 
     	<div style="position: relative; height:500px">
     		<div style="text-align: center;">
-            <h2>Friends using Regi</h2><br>
+            <h2>Friends using Regi</h2>
             <h4>Click on them to see their schedule!</h4>
             <br>
                     {% for f in friends %}
