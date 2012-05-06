@@ -84,7 +84,10 @@ top: 80px;
         $("#searchbox").autocomplete({
             source: "autocomplete",
             appendTo: "#autocomplete-suggestions",
-            delay: 100});
+            delay: 100,
+            selectFirst: true,
+            html: true
+        });
         });
 </script>
 <iframe src="//www.facebook.com/plugins/facepile.php?href=http%3A%2F%2Fbaguette.herokuapp.com%2Fclass%2F6.046&amp;action=mitcourses%3Ais+taking&amp;size=large&amp;max_rows=1&amp;width=300&amp;colorscheme=light&amp;appId=196886180398409" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
