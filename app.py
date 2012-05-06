@@ -444,7 +444,10 @@ def show_user(userid):
     #    if unicode(f['uid']) in classTakers:
     #        friendClassTakers.append(f)
     user_profile = getUserProfile(userid)
-    classes = getClassesForFBID(userid)
+    classesCursor = getClassesForFBID(userid)
+    classes = []
+    for cl in classesCursor:
+        classes.append(cl)
     schedule = []
     colorcounter = 0
     for cl in classes:
