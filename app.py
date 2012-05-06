@@ -374,7 +374,10 @@ def makeClassSchedule(cl, color=0):
         endtime = timeToFloat(second)
         length = endtime - ttime
     else:
-        first = re.match('[MTWRF]*([0-9]+)', time).group(1)
+        try:
+            first = re.match('[MTWRF]*([0-9]+)', time).group(1)
+        except Exception:
+            return []
         ttime = timeToFloat(first)
         length = 1.0
     for c in days:
