@@ -402,7 +402,10 @@ def makeMyClassSchedule(cl, fbid, color=0):
         print session, time
         if time is None:
             continue
-        days = re.match('([MTWRF]+)', time).group(1)
+        try:
+            days = re.match('([MTWRF]+)', time).group(1)
+        except Exception:
+            continue
         if '-' in time:
             print time
             first  = re.match('[MTWRF]*([0-9.]+)-([0-9.]+)', time).group(1)
