@@ -20,9 +20,6 @@ li {
     -moz-box-shadow: inset 1px 1px 1px 0px white;
     -webkit-box-shadow: inset 1px 1px 1px 0px white;
 }
-ul.F .schedule-day li {
-    border-right: 1px solid #AAAAAC;
-}
 .schedule-day li.header {
     background: white;
     height: 100%;
@@ -37,6 +34,9 @@ ul.schedule-day {
     border-right: 1px solid #CCC;
     border-bottom: 1px solid #AAA;
     position: relative;
+}
+ul.schedule-day .F {
+    border-right: 2px solid #CCC;
 }
 ul.time-label {
     margin-top: 32px;
