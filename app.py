@@ -318,13 +318,16 @@ def main():
         session['token'] = access_token
         session['first_name'] = first_name
         friends = get_friends()
-        userFBIDs = set()
-        for u in db.users.User.find():
-            userFBIDs.add(u['fb_id'])
-        baguette_friends = []
-        for f in friends:
-            if unicode(f['uid']) in userFBIDs:
-                baguette_friends.append(f)
+        baguette_friends = cache.get('baguette_friends_' + str(fb_id))
+        if baguette_friends is None:
+            baguette_friends = []
+            userFBIDs = set()
+            for u in db.users.User.find():
+                userFBIDs.add(u['fb_id'])
+            for f in friends:
+                if unicode(f['uid']) in userFBIDs:
+                    baguette_friends.append(f)
+            cache.set('baguette_friends_' + str(fb_id))
     else:
         pass
 
