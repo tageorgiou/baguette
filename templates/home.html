@@ -20,23 +20,6 @@
 
 {% block body %}
 
-<script language="Javascript"> 
-<!-- 
-function ShowPicture(id,Source) { 
-if (Source=="1"){ 
-if (document.layers) document.layers[''+id+''].visibility = "show" 
-else if (document.all) document.all[''+id+''].style.visibility = "visible" 
-else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "visible" 
-} 
-else 
-if (Source=="0"){ 
-if (document.layers) document.layers[''+id+''].visibility = "hide" 
-else if (document.all) document.all[''+id+''].style.visibility = "hidden" 
-else if (document.getElementById) document.getElementById(''+id+'').style.visibility = "hidden" 
-} 
-} 
-//--> 
-</script> 
 <style type="text/css"> 
 #Style { 
 float:left;
@@ -51,7 +34,7 @@ top: 80px;
 
 <div style="margin-top:-21px;float:center; text-align:center; background-color: #ffffff; border-width:1px; border-style: solid; bordercolor:#2F4F4F">
 	
-<a href="/" onMouseOver="ShowPicture('Style',1)" onMouseOut="ShowPicture('Style',0)"><img src="static/img/WebLogo.png" alt="regi logo"/></a>
+<a href="/"><img src="static/img/WebLogo.png" alt="regi logo"/></a>
 <div id="Style"><img src="static/img/Blurb.png" style="width:250px"></div> 
 <h2>Hi {{ first_name }}!</h2>
 <h3>Regi is an interactive class scheduler for <a href="http://mit.edu">MIT</a></h3>
