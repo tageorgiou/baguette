@@ -86,7 +86,8 @@ top: 80px;
             appendTo: "#autocomplete-suggestions",
             delay: 100,
             selectFirst: true,
-            html: true
+            html: true,
+            select: function(event, ui) {alert('hi');}
         });
         });
 </script>
