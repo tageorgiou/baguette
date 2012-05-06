@@ -259,7 +259,7 @@ def autocomplete():
         ]}
 
     for c in db.classes.Class.find(mongoquery).sort(u'name', 1).limit(8):
-        labelHtml = '<span>%s</span><span style="float:right">%s</span>' % \
+        labelHtml = '<span style="font-weight:bold">%s</span><span style="float:right">%s</span>' % \
             (c['name'], c['label'])
         val = {'label': labelHtml,
                 'value': c['name'],
