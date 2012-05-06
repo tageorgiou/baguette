@@ -317,9 +317,9 @@ def main():
         session['fb_id'] = fb_id
         session['token'] = access_token
         session['first_name'] = first_name
-        friends = get_friends()
         baguette_friends = cache.get('baguette_friends_' + str(fb_id))
         if baguette_friends is None:
+            friends = get_friends()
             baguette_friends = []
             userFBIDs = set()
             for u in db.users.User.find():
