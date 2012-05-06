@@ -327,7 +327,8 @@ def main():
             for f in friends:
                 if unicode(f['uid']) in userFBIDs:
                     baguette_friends.append(f)
-            cache.set('baguette_friends_' + str(fb_id))
+            cache.set('baguette_friends_' + str(fb_id), baguette_friends, 5*60)
+            #5min
     else:
         pass
 
