@@ -37,7 +37,7 @@ top: 80px;
 <a href="/"><img src="static/img/WebLogo.png" alt="regi logo"/></a>
 <!--<div id="Style"><img src="static/img/Blurb.png" style="width:250px"></div>
 -->
-<h2>Hi {{ first_name }}!</h2>
+<h2>Hey {{ first_name }}!</h2>
 <h3>Regi is a social class scheduler for <a
         href="http://mit.edu">MIT</a>, Fall 2012</h3>
 {% if (classes|length) == 0 %}
@@ -68,13 +68,14 @@ top: 80px;
     	<div style="position: relative; height:500px">
     		<div style="text-align: center;">
             <h2>Friends using Regi</h2>
-            <h4>Click on them to see their schedule!</h4>
+            <h5>(Click on them to see their schedule!)</h5>
             <br>
                     {% for f in friends %}
                     <a href="/user/{{f.uid}}">
-                        <div style="float:left; text-align:center; padding: 10px;">
-                            <h4>{{ f.name }}</h4>
+                        <div style="float:left; margin-left:5px; text-align:center;
+                            width:110px; height:120px">
                             <img src="{{ f.pic_square }}">
+                            <h4>{{ f.name }}</h4>
                         </div>
                     </a>
                     {% endfor %}
