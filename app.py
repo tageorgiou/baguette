@@ -88,7 +88,7 @@ def takeClass(cl, fbid):
         accesstoken = session['token']
     classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
-        'professor' : cl['professor']})
+        'professor' : ','.join(cl['professor'])})
     url = url + classurl
     h = httplib2.Http()
     if BYPASS:
