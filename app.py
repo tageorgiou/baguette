@@ -324,9 +324,10 @@ def main():
             userFBIDs = set()
             for u in db.users.User.find():
                 userFBIDs.add(u['fb_id'])
-            for f in friends:
+            for f in sorted(friends, key=lambda f: f['name']):
                 if unicode(f['uid']) in userFBIDs:
                     baguette_friends.append(f)
+            
             cache.set('baguette_friends_' + str(fb_id), baguette_friends, 5*60)
             #5min
     else:
