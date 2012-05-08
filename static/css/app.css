@@ -64,9 +64,9 @@ ul.time-label li {
 }
 .schedule-block:hover {
     z-index:1000;
-    box-shadow: 1px 2px 2px 1px #aaa;
-    -webkit-box-shadow: 1px 2px 2px 1px #aaa;
-    -moz-box-shadow: 1px 2px 2px 1px #aaa;
+    box-shadow: 0px 0px 2px 2px #aaa;
+    -webkit-box-shadow: 0px 0px 2px 2px #aaa;
+    -moz-box-shadow: 0px 0px 2px 2px #aaa;
 }
 .color-0{
     background: #c3ecff;
