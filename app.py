@@ -25,7 +25,7 @@ NOACTION_CLASS_TAKE = '-1'
 BYPASS = False
 
 app = Flask(__name__)
-app.debug = True
+#app.debug = True
 app.secret_key = '\x98_M\xcaAV\x19\xfe\x01""\xf6|\xf4\xe4\x18\xc6\xbb^\x93\x8e\x13\x0f\xe5'
 
 
