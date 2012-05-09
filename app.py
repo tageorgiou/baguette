@@ -103,7 +103,7 @@ def takeClass(cl, fbid):
         was_successful = (resp['status'] == '200')
         #print 'was_succesful, ' + was_successful
         content = json.loads(content)
-        #print 'content, ' + content
+        print 'content, ' + str(content)
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
     else: 
