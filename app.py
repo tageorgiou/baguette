@@ -90,7 +90,7 @@ def takeClass(cl, fbid):
         accesstoken = session['token']
     classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
-        'professor' : ','.join(cl['professor']),
+        'professor' : ', '.join(cl['professor']),
         'start_time' : datetime.datetime.now().isoformat(),
         'end_time':    '2012-12-22 00:00:00'})
     url = url + classurl
