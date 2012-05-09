@@ -9,6 +9,7 @@ from urllib import urlencode
 import re
 from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
+import datetime
 
 from flask import Flask, request, redirect, render_template, session
 from database import db
@@ -55,7 +56,7 @@ def show_class(classname):
     if cl == None:
         return "404", 404 #Better 404 page
     cl_is_taking = fbid in cl['users'] #Am I taking the class?
-    if BYPASS or not (fbid == ''):
+    if BYPASS or fbid == '':
         friendList = []
     else:
         friendList = get_friends()
@@ -90,7 +91,7 @@ def takeClass(cl, fbid):
     classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
         'professor' : ','.join(cl['professor']),
-        'start_time' : '2012-09-05 00:00:00',
+        'start_time' : datetime.datetime.now().isoformat(),
         'end_time':    '2012-12-22 00:00:00'})
     url = url + classurl
     h = httplib2.Http()
