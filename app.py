@@ -101,7 +101,7 @@ def takeClass(cl, fbid):
         resp, content = h.request(url, "POST", '')
         print 'requesting, ' + url
         was_successful = (resp['status'] == '200')
-        print 'was_succesful, ' + was_successful
+        #print 'was_succesful, ' + was_successful
         content = json.loads(content)
         print 'content, ' + content
     if was_successful:
