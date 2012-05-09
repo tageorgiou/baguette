@@ -49,12 +49,13 @@ def getUserProfile(fbid):
 @app.route('/class/<classname>')
 def show_class(classname):
     cl = db.classes.Class.find_one({'name': classname})
+    fbid = ''
     if 'fb_id' in session:
         fbid = session['fb_id']
     if cl == None:
         return "404", 404 #Better 404 page
     cl_is_taking = fbid in cl['users'] #Am I taking the class?
-    if BYPASS:
+    if BYPASS or not (fbid == ''):
         friendList = []
     else:
         friendList = get_friends()
@@ -88,7 +89,9 @@ def takeClass(cl, fbid):
         accesstoken = session['token']
     classurl = urlencode({'class': UNSECURE_DOMAIN + 'class/' + cl['name'],
         'access_token': accesstoken,
-        'professor' : ','.join(cl['professor'])})
+        'professor' : ','.join(cl['professor']),
+        'start_time' : '2012-09-05 00:00:00',
+        'end_time':    '2012-12-22 00:00:00'})
     url = url + classurl
     h = httplib2.Http()
     if BYPASS:
