@@ -98,8 +98,11 @@ def takeClass(cl, fbid):
         was_successful = False
     else:
         resp, content = h.request(url, "POST", '')
+        print 'requesting, ' + url
         content = json.loads(content)
+        print 'content, ' + content
         was_successful = (resp['status'] == '200')
+        print 'was_succesful, ' + was_successful
     if was_successful:
         cl['users'][fbid] = unicode(content['id'])
     else: 
