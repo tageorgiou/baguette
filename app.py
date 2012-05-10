@@ -133,7 +133,10 @@ def take_class(classname):
     if cl == None:
         return "404", 404
     if 'fb_id' not in session:
-        return "not authorized"
+        #get authorization
+        session['redirect_next'] = '/class/%s/take' % classname
+        return redirect('/')
+        #return "not authorized"
     if 'token' not in session:
         return "not logged in"
     fbid = session['fb_id']
@@ -324,6 +327,11 @@ def main():
         session['fb_id'] = fb_id
         session['token'] = access_token
         session['first_name'] = first_name
+        #redirect to previoused page after getting auth
+        if 'redirect_next' in session:
+            redirect_next = session['redirect_next']
+            del session['redirect_next']
+            return redirect(redirect_next)
         baguette_friends = cache.get('baguette_friends_' + str(fb_id))
         if baguette_friends is None:
             friends = get_friends()
