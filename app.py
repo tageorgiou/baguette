@@ -281,6 +281,7 @@ def autocomplete():
     mongoquery = {'$or' : [
         {'professor': {'$regex': query, '$options': 'i'}}, #case insensitive
         {'name': {'$regex': '^' + query, '$options': 'i'}},
+        {'label': {'$regex': query, '$options': 'i'}},
         ]}
 
     for c in db.classes.Class.find(mongoquery).sort(u'name', 1).limit(10):
