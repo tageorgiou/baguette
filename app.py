@@ -74,6 +74,12 @@ def show_class(classname):
             cl_is_taking=cl_is_taking, friends=friendClassTakers,
             schedule=schedule, mySessions=mySessions)
 
+#def getTypeOfSession(cl, sessionlabel):
+#    for s in cl['sessions']:
+#        if s['label'] == unicode(sessionlabel):
+#            return s['type']
+#    return None
+
 def findFirstSessionType(cl, stype):
     for s in cl['sessions']:
         if s['type'] == unicode(stype):
@@ -195,6 +201,7 @@ def untake_class(classname):
 
 @app.route('/class/<classname>/<sessionname>/take')
 def take_session(classname, sessionname):
+    clear_session_type(classname, sessionname[0]) #clear other sessions
     cl = db.classes.Class.find_one({'name': classname})
     fbid = session['fb_id']
     if fbid in cl['usersessions']:
@@ -211,6 +218,14 @@ def untake_session(classname, sessionname):
     cl['usersessions'][fbid].remove(sessionname)
     cl.save()
     return redirect('/class/%s' % classname)
+
+def clear_session_type(classname, sessiontypeChar):
+    fbid = session['fb_id']
+    cl = db.classes.Class.find_one({'name': classname})
+    if fbid in cl['usersessions']:
+        cl['usersessions'][fbid] = [sessionname for sessionname in
+                cl['usersessions'][fbid] if sessionname[0] != sessiontypeChar]
+    cl.save()
 
 def find_registered_classes(fbid):
     """What classes am I in?"""
