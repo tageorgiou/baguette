@@ -11,7 +11,7 @@ from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 import datetime
 
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, send_from_directory
 from database import db
 
 FB_APP_ID = 196886180398409
@@ -511,6 +511,11 @@ def fixClasses():
             untakeClass(cl, u)
             takeClass(cl, u)
     return ""
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+    'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.debug = True
